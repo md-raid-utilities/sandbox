@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI Test 1
+name: CI Test 2
 
 # Controls when the workflow will run
 on:
@@ -38,7 +38,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo RUN THIS!
+        run: echo LOCAL UN THIS!
 
       - name: Compile
         run: gcc hello.c
@@ -50,5 +50,5 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
-          echo test, and deploy your project.
+          echo LOCAL test, and deploy your project.
           ./a.out
