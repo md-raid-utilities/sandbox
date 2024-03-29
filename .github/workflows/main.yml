@@ -38,7 +38,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo LOCAL UN THIS!
+        run: echo LOCAL UN THIS XXX!
 
       - name: Compile
         run: gcc hello.c
