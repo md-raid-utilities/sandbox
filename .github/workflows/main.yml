@@ -16,7 +16,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: test
+    runs-on: local
     # the next section is for leveraging a container on the runner, the example
     # below shows one called hell-test that is self hosted on the runner.  It;s
     # commented out because of experiments I'm doing with various ways of using
