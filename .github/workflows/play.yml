@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: [test]  # Specify self-hosted runner with "linux" label
+    runs-on: [local]  # Specify self-hosted runner with "linux" label
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
 
