@@ -4,43 +4,35 @@ name: Build Linux Kernel in VM
 on:
   push:
     branches: [ main ]
-  schedule:
-    - cron: '0 0 * * *'  # Run every day at midnight (adjust as needed)
+#  schedule:
+ #   - cron: '0 0 * * *'  # Run every day at midnight (adjust as needed)
 
 jobs:
   build:
-    runs-on: [local]  # Specify self-hosted runner with "linux" label
+    runs-on: local  # Specify self-hosted runner with "linux" label
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
 
-      - name: Set up VM environment
-        uses: actions/virtualbox@v3  # Action to manage VirtualBox
-        with:
-          image: ubuntu-latest.iso  # Pre-built Ubuntu image (or custom image URL)
-          memory: 4096  # Memory allocated to the VM (adjust as needed)
-          cpus: 2  # CPUs allocated to the VM (adjust as needed)
-
-      - name: Install build dependencies (inside VM)
-        run: |  # Shell script commands run inside the VM
-          sudo apt update && sudo apt upgrade -y
-          sudo apt install -y build-essential fakeroot kernel-package git
-          # Install any additional dependencies required for kernel building
-
-      - name: Clone kernel source (inside VM)
+      - name: Test VM SSH
         run: |
-          git clone https://git.kernel.org/pub/scm/linux/kernel.git kernel-source
+          echo $PWD
+          vagrant up
+          vagrant ssh -c "ls -al"
+          #ssh -o StrictHostKeyChecking=no vagrant@vm_ip "command_to_run_in_vm"
+      
+      #- name: Build IT
+      #  run: |
+      #    echo $PWD
+      #    cd linux
+      #    git pull
+      #    make defconfig  # Choose a kernel config (adjust as needed)
+      #    make -j$(nproc)  # Build using parallel jobs based on available CPUs
 
-      - name: Build the kernel (inside VM)
-        run: |
-          cd kernel-source
-          make defconfig  # Choose a kernel config (adjust as needed)
-          make -j$(nproc)  # Build using parallel jobs based on available CPUs
-
-      - name: Upload kernel image (optional)
-        uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
-        with:
-          name: kernel-image
-          path: /path/to/kernel/image/in/vm  # Path to the built kernel image within the VM
+      #- name: Upload kernel image (optional)
+      #  uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
+      #  with:
+      #    name: kernel-image
+      #    path: /path/to/kernel/image/in/vm  # Path to the built kernel image within the VM
 
 # Customize this workflow as needed:
 #  * Adjust triggers (push events, schedules)
