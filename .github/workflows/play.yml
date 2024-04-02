@@ -15,23 +15,19 @@ jobs:
 
       - name: Bring up VM
         run: |
-          echo $PWD
           vagrant up
-          vagrant ssh -c "ls -al"
+          vagrant ssh -c "pwd && ls -al"
       
       - name: Update git repo
         run: |
-          echo $PWD
           vagrant ssh -c "echo $PWD"
           vagrant ssh -c "cd linux && git pull"
 
       - name: Build the kernel
         run: |
-          vagrant ssh -c "echo $PWD"
-          vagrant ssh -c "cd linux"
-          vagrant ssh -c "make clean -j$(nproc)"
-          vagrant ssh -c "make defconfig"
-          vagrant ssh -c "make -j$(nproc)"
+          vagrant ssh -c "cd linux && make clean -j$(nproc)"
+          vagrant ssh -c "cd linux && make defconfig"
+          vagrant ssh -c "cd linux && make -j$(nproc)"
 
       #- name: Upload kernel image (optional)
       #  uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
