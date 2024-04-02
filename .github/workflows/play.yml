@@ -23,12 +23,12 @@ jobs:
         run: |
           echo $PWD
           vagrant ssh -c "echo $PWD"
-          vagrant ssh -c "cd linux"
-          vagrant ssh -c "git pull"
+          vagrant ssh -c "cd linux && git pull"
 
       - name: Build the kernel
         run: |
           vagrant ssh -c "echo $PWD"
+          vagrant ssh -c "cd linux"
           vagrant ssh -c "make clean -j$(nproc)"
           vagrant ssh -c "make defconfig"
           vagrant ssh -c "make -j$(nproc)"
