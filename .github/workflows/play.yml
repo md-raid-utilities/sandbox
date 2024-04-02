@@ -13,20 +13,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
 
-      - name: Test VM SSH
+      - name: Bring up VM
         run: |
           echo $PWD
           vagrant up
           vagrant ssh -c "ls -al"
-          #ssh -o StrictHostKeyChecking=no vagrant@vm_ip "command_to_run_in_vm"
       
-      #- name: Build IT
-      #  run: |
-      #    echo $PWD
-      #    cd linux
-      #    git pull
-      #    make defconfig  # Choose a kernel config (adjust as needed)
-      #    make -j$(nproc)  # Build using parallel jobs based on available CPUs
+      - name: Update git repo
+        run: |
+          vagrant ssh -c "echo $PWD"
+          vagrant ssh -c "cd linux"
+          vagrant ssh -c "git pull"
+
+      - name: Build the kernel
+        run: |
+          vagrant ssh -c "echo $PWD"
+          vagrant ssh -c "make clean -j$(nproc)"
+          vagrant ssh -c "make defconfig"
+          vagrant ssh -c "make -j$(nproc)"
 
       #- name: Upload kernel image (optional)
       #  uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
