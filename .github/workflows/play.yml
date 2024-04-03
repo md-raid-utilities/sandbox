@@ -23,12 +23,21 @@ jobs:
           vagrant ssh -c "echo $PWD"
           vagrant ssh -c "cd linux" # && git pull"
 
-      - name: Build the kernel
+      - name: Build and install kernel, reboot
         run: |
           vagrant ssh -c "cd linux && make clean -j$(nproc)"
           vagrant ssh -c "cd linux && make defconfig"
           vagrant ssh -c "cd linux && make bzImage -j$(nproc)"
           vagrant ssh -c "cd linux && make modules -j$(nproc)"
+          vagrant ssh -c "cd linux && make modules_install -j$(nproc)"
+          vagrant ssh -c "cd linux && make install -j$(nproc)"
+          vagrant ssh -c "sudo reboot"
+
+      - name: Bring up VM after reboot
+        run: |
+           vagrant up
+           vagrant ssh -c "uname -r"
+          
 
       #- name: Upload kernel image (optional)
       #  uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
