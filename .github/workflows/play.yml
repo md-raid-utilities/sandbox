@@ -24,6 +24,7 @@ jobs:
           #vagrant ssh -c "cd linux" # && git pull"
 
       - name: Build and install kernel, reboot
+        id: build
         run: |
           #vagrant ssh -c "cd linux && make clean -j$(nproc)"
           #vagrant ssh -c "cd linux && make defconfig"
@@ -32,7 +33,9 @@ jobs:
           #vagrant ssh -c "cd linux && sudo make modules_install -j$(nproc)"
           #vagrant ssh -c "cd linux && sudo make install -j$(nproc)"
           vagrant ssh -c "gcc hello.c"
-          # check for error
+          if: build.outputs.num == 0
+            run: echo zero
+          
           vagrant ssh -c "./a.out"
                     
           vagrant halt
