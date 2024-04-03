@@ -29,27 +29,12 @@ jobs:
           vagrant ssh -c "cd linux && make defconfig"
           vagrant ssh -c "cd linux && make bzImage -j$(nproc)"
           vagrant ssh -c "cd linux && make modules -j$(nproc)"
-          vagrant ssh -c "cd linux && make modules_install -j$(nproc)"
-          vagrant ssh -c "cd linux && make install -j$(nproc)"
+          vagrant ssh -c "cd linux && sudo make modules_install -j$(nproc)"
+          vagrant ssh -c "cd linux && sudo make install -j$(nproc)"
           vagrant ssh -c "sudo reboot"
 
       - name: Bring up VM after reboot
         run: |
            vagrant up
            vagrant ssh -c "uname -r"
-          
-
-      #- name: Upload kernel image (optional)
-      #  uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
-      #  with:
-      #    name: kernel-image
-      #    path: /path/to/kernel/image/in/vm  # Path to the built kernel image within the VM
-
-# Customize this workflow as needed:
-#  * Adjust triggers (push events, schedules)
-#  * Modify VM configuration (memory, CPUs, image)
-#  * Install specific kernel build dependencies
-#  * Choose a kernel configuration (defconfig)
-#  * Specify the path to the built kernel image for upload
-#  * Add additional steps for post-build actions (e.g., testing)
 
