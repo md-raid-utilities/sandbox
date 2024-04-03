@@ -21,7 +21,7 @@ jobs:
       - name: Update git repo
         run: |
           vagrant ssh -c "echo $PWD"
-          vagrant ssh -c "cd linux && git pull"
+          vagrant ssh -c "cd linux" # && git pull"
 
       - name: Build the kernel
         run: |
