@@ -27,7 +27,8 @@ jobs:
         run: |
           vagrant ssh -c "cd linux && make clean -j$(nproc)"
           vagrant ssh -c "cd linux && make defconfig"
-          vagrant ssh -c "cd linux && make -j$(nproc)"
+          vagrant ssh -c "cd linux && make bzImage -j$(nproc)"
+          vagrant ssh -c "cd linux && make modules -j$(nproc)"
 
       #- name: Upload kernel image (optional)
       #  uses: actions/upload-artifact@v3  # Upload artifacts produced in the VM
