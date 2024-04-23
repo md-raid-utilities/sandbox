@@ -29,15 +29,15 @@ jobs:
         id: build
         run: |
           cd /home/ci/vagrant
-          vagrant ssh -c "cd linux && make clean -j$(nproc)"
-          vagrant ssh -c "cd linux && make defconfig"
-          vagrant ssh -c "cd linux && make bzImage -j$(nproc)"
-          vagrant ssh -c "cd linux && make modules -j$(nproc)"
-          vagrant ssh -c "cd linux && sudo make modules_install -j$(nproc)"
-          vagrant ssh -c "cd linux && sudo make install -j$(nproc)"
-          vagrant ssh -c "gcc hello.c"
+          vagrant ssh -c "cd md && make clean -j$(nproc)"
+          vagrant ssh -c "cd md && make defconfig"
+          vagrant ssh -c "cd md && make bzImage -j$(nproc)"
+          vagrant ssh -c "cd md && make modules -j$(nproc)"
+          vagrant ssh -c "cd md && sudo make modules_install -j$(nproc)"
+          vagrant ssh -c "cd md && sudo make install -j$(nproc)"
+          #vagrant ssh -c "gcc hello.c"
           if: build.outputs.num == 0
-            run: echo zero
+            run: echo build.outputs.num == 0
           
           #vagrant ssh -c "./a.out"
                     
