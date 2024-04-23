@@ -15,6 +15,7 @@ jobs:
 
       - name: Bring up VM
         run: |
+          cd vagrant
           vagrant up
           vagrant ssh -c "pwd && ls -al"
       
