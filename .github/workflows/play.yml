@@ -15,34 +15,37 @@ jobs:
 
       - name: Bring up VM
         run: |
-          cd vagrant
+          cd /home/ci/vagrant
           vagrant up
           vagrant ssh -c "pwd && ls -al"
       
       - name: Update git repo
         run: |
+          cd /home/ci/vagrant
           vagrant ssh -c "echo $PWD"
           #vagrant ssh -c "cd linux" # && git pull"
 
       - name: Build and install kernel, reboot
         id: build
         run: |
-          #vagrant ssh -c "cd linux && make clean -j$(nproc)"
-          #vagrant ssh -c "cd linux && make defconfig"
-          #vagrant ssh -c "cd linux && make bzImage -j$(nproc)"
-          #vagrant ssh -c "cd linux && make modules -j$(nproc)"
-          #vagrant ssh -c "cd linux && sudo make modules_install -j$(nproc)"
-          #vagrant ssh -c "cd linux && sudo make install -j$(nproc)"
+          cd /home/ci/vagrant
+          vagrant ssh -c "cd linux && make clean -j$(nproc)"
+          vagrant ssh -c "cd linux && make defconfig"
+          vagrant ssh -c "cd linux && make bzImage -j$(nproc)"
+          vagrant ssh -c "cd linux && make modules -j$(nproc)"
+          vagrant ssh -c "cd linux && sudo make modules_install -j$(nproc)"
+          vagrant ssh -c "cd linux && sudo make install -j$(nproc)"
           vagrant ssh -c "gcc hello.c"
           if: build.outputs.num == 0
             run: echo zero
           
-          vagrant ssh -c "./a.out"
+          #vagrant ssh -c "./a.out"
                     
           vagrant halt
 
       - name: Bring up VM after reboot
         run: |
+           cd /home/ci/vagrant
            vagrant up
            vagrant ssh -c "uname -r"
 
