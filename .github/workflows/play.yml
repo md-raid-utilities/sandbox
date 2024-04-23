@@ -23,7 +23,7 @@ jobs:
         run: |
           cd /home/ci/vagrant
           vagrant ssh -c "echo $PWD"
-          vagrant ssh -c "cd shared/md" # && git pull"
+          vagrant ssh -c "cd share/md" # && git pull"
 
       - name: Build and install kernel, reboot
         id: build
