@@ -28,7 +28,7 @@ jobs:
       - name: Build and install kernel, reboot
         id: build
         run: |
-          #cd /home/ci/vagrant/share/md
+          cd /home/ci/vagrant
           vagrant ssh -c "cd share/md && make clean -j$(nproc)"
           vagrant ssh -c "cd share/md && make defconfig"
           vagrant ssh -c "cd share/md && make bzImage -j$(nproc)"
