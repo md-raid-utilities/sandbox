@@ -10,7 +10,7 @@ jobs:
   shellcheck:
     # This workflow gets injected into other Linux repositories, but we don't
     # want it to run there.
-    if: ${{ github.repository == 'md-raid-ci/sandbox' }}
+    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
     name: ShellCheck
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +23,7 @@ jobs:
 
   # Ensure some consistency in the formatting.
   lint:
-    if: ${{ github.repository == 'md-raid-ci/sandbox' }}
+    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
     name: Lint
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +35,7 @@ jobs:
           src: ./.github/scripts
 
   validate_matrix:
-    if: ${{ github.repository == 'md-raid-ci/sandbox' }}
+    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
     name: Validate matrix.py
     runs-on: ubuntu-latest
     env:
@@ -54,7 +54,7 @@ jobs:
           python3 .github/scripts/matrix.py
 
   unittests:
-    if: ${{ github.repository == 'md-raid-ci/sandbox' }}
+    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
     name: Unittests
     runs-on: ubuntu-latest
     steps:
