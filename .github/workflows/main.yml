@@ -17,15 +17,17 @@ jobs:
           sudo apt-get install -y libelf-dev
           mkdir -p linux
           cd linux
+          git init
           # PL
-          git clone -b md-6.11 https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
-          cd md
+          git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           #git remote add origin https://github.com/${{ github.repository }}
           #git fetch origin --depth=5 ${{ github.event.pull_request.head.sha }}
           #git reset --hard ${{ github.event.pull_request.head.sha }}
           git log -1
       - name: Build kernel
         run: |
-          cd linux/md
+          cd linux
           make defconfig
           make -j 8
