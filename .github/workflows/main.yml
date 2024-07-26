@@ -1,65 +1,27 @@
-name: "lint"
+name: sanbox-test
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
+  pull_request:
 
 jobs:
-  shellcheck:
-    # This workflow gets injected into other Linux repositories, but we don't
-    # want it to run there.
-    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
-    name: ShellCheck
+  build-kernel:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        env:
-          SHELLCHECK_OPTS: --severity=warning --exclude=SC1091
-
-  # Ensure some consistency in the formatting.
-  lint:
-    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Run black
-        uses: psf/black@stable
-        with:
-          src: ./.github/scripts
-
-  validate_matrix:
-    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
-    name: Validate matrix.py
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_REPOSITORY_OWNER: ${{ matrix.owner }}
-      GITHUB_REPOSITORY: ${{ matrix.repository }}
-      GITHUB_OUTPUT: /dev/stdout
-    strategy:
-      matrix:
-        owner: ['md-raid-ci', 'foo']
-        repository: ['sandbox', 'vmtest', 'bar']
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: run script
+      - name: Configure git
         run: |
-          python3 .github/scripts/matrix.py
-
-  unittests:
-    #if: ${{ github.repository == 'md-raid-ci/sandbox' }}
-    name: Unittests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Run unittests
-        run: python3 -m unittest scripts/tests/*.py
-        working-directory: .github
+          git config --global --add safe.directory '*'
+      - name: Checkout git
+        run: |
+          sudo apt-get install -y libelf-dev
+          mkdir -p linux
+          cd linux
+          git clone --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          #git remote add origin https://github.com/${{ github.repository }}
+          #git fetch origin --depth=5 ${{ github.event.pull_request.head.sha }}
+          #git reset --hard ${{ github.event.pull_request.head.sha }}
+          git log -1
+      - name: Build kernel
+        run: |
+          cd linux
+          make defconfig
+          make -j 8
