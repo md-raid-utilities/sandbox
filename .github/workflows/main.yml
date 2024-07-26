@@ -19,14 +19,12 @@ jobs:
           cd linux
           # PL
           git clone --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          cd md
           git checkout md-6.11
           #PL
           #git remote add origin https://github.com/${{ github.repository }}
           #git fetch origin --depth=5 ${{ github.event.pull_request.head.sha }}
           #git reset --hard ${{ github.event.pull_request.head.sha }}
-          #PL
-          cd md
-          #PL
           git log -1
       - name: Build kernel
         run: |
