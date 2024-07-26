@@ -9,9 +9,9 @@ jobs:
   build-kernel:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure git
-        run: |
-          git config --global --add safe.directory '*'
+      #- name: Configure git
+      #  run: |
+      #    git config --global --add safe.directory '*'
       - name: Checkout git
         run: |
           sudo apt-get install -y libelf-dev
