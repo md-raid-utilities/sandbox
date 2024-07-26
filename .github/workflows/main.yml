@@ -18,7 +18,7 @@ jobs:
           mkdir -p linux
           cd linux
           # PL
-          git clone --depth 5 https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          git clone https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
           cd md
           git fetch --all
           git checkout md-6.11
