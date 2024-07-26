@@ -18,11 +18,8 @@ jobs:
           mkdir -p linux
           cd linux
           # PL
-          git clone https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          git clone -b md-6.11 https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
           cd md
-          git fetch --all
-          git checkout md-6.11
-          #PL
           #git remote add origin https://github.com/${{ github.repository }}
           #git fetch origin --depth=5 ${{ github.event.pull_request.head.sha }}
           #git reset --hard ${{ github.event.pull_request.head.sha }}
