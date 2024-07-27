@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Checkout git
         run: |
+          rm -rf linux
           mkdir -p linux
           cd linux
           git init
