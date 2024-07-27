@@ -23,4 +23,5 @@ jobs:
         run: |
           cd linux
           make defconfig
-          make -j 199
+          make bzImage -j32
+          make modules -j32
