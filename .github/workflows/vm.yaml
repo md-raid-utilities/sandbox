@@ -19,7 +19,7 @@ jobs:
         run: |
           pwd
           cd /home/ci/vagrant
-          pwdp
+          pwd
           vagrant reload
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
