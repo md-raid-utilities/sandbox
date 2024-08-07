@@ -18,6 +18,8 @@ jobs:
       - name: VM Reboot
         run: |
           pwd
+          cd /home/ci/vagrant
+          pwdp
           vagrant reload
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
