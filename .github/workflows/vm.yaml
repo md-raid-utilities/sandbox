@@ -20,22 +20,24 @@ jobs:
           vagrant ssh -c 'uname -r'
       - name: Checkout kernel source
         run: |
-          rm -rf linux
-          mkdir -p linux
-          cd linux
-          git init
-          git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          cd /home/ci/vagrant # TODO update
+          vagrant ssh -c 'rm -rf linux'
+          vagrant ssh -c 'mkdir -p linux'
+          vagrant ssh -c 'cd linux'
+          vagrant ssh -c 'git init'
+          vagrant ssh -c 'git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git'
           # just a random hash for quick repo population, get this from PR
-          git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-          git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-          git log -1
+          vagrant ssh -c 'git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
+          vagrant ssh -c 'git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
+          vagrant ssh -c 'git log -1'
       - name: Build kernel
         run: |
-          cd linux
-          make defconfig -j32 # TODO don't H/C core count
-          make bzImage -j32
-          make modules -j32
-          make install -j32
+          cd /home/ci/vagrant # TODO update
+          vagrant ssh -c 'cd linux'
+          vagrant ssh -c 'make defconfig -j32' # TODO don't H/C core count
+          vagrant ssh -c 'make bzImage -j32'
+          vagrant ssh -c 'make modules -j32'
+          vagrant ssh -c ' sudo make install -j32'
           uname -r
       - name: VM Reboot and version check
         run: |
