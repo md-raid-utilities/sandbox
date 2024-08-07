@@ -39,3 +39,4 @@ jobs:
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
+          vagrant halt
