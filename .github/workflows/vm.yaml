@@ -13,7 +13,8 @@ jobs:
         run: |
           cd /home/ci/vagrant
           vagrant up
-          vagrant ssh 'uname -r'
+          vagrant ssh -c "echo 'hello world!'"
+          vagrant ssh -c 'uname -r'
           vagrant halt
           
       #- name: Checkout git
