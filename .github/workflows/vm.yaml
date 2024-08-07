@@ -28,6 +28,6 @@ jobs:
           make modules -j32
           uname -r
       - name: Reboot kernel
-          run: |
+        run: |
           reboot
           uname -r
