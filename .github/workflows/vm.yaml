@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: VM Startup and Check
         run: |
+          # TODO restore clean snaphot of a build ready VM
+          # TODO, the path below needs to be based off the runner
+          #       service dir so each runner has its own VM
           cd /home/ci/vagrant
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
@@ -22,7 +25,7 @@ jobs:
           cd linux
           git init
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
-          # just a random hash for quick repo population
+          # just a random hash for quick repo population, get this from PR
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git log -1
@@ -30,13 +33,18 @@ jobs:
         run: |
           cd linux
           make defconfig
-          make bzImage -j32
-          make modules -j32
+          make bzImage
+          make modules
+          make install
           uname -r
       - name: VM Reboot and version check
         run: |
-          cd /home/ci/vagrant
+          cd /home/ci/vagrant # TODO update path once 'serviceized'
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
+      # TODO:  add testing steps
+      - name: All done, cleanup
+        run: |          
+          cd /home/ci/vagrant # TODO update path once 'serviceized'
           vagrant halt
