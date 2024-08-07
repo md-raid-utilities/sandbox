@@ -17,7 +17,8 @@ jobs:
           vagrant ssh -c 'uname -r'
       - name: VM Reboot
         run: |
-          vagrant ssh -c 'reboot'
+          pwd
+          vagrant reload
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
           
