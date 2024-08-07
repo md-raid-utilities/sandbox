@@ -32,10 +32,10 @@ jobs:
       - name: Build kernel
         run: |
           cd linux
-          make defconfig
-          make bzImage
-          make modules
-          make install
+          make defconfig -j32 # TODO don't H/C core count
+          make bzImage -j32
+          make modules -j32
+          make install -j32
           uname -r
       - name: VM Reboot and version check
         run: |
