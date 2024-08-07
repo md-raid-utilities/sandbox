@@ -1,4 +1,4 @@
-name: sanbox-test
+name: BM-sanbox-test
 
 on:
   pull_request:
