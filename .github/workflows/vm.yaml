@@ -15,7 +15,11 @@ jobs:
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
-          vagrant halt
+      - name: VM Reboot
+        run: |
+          vagrant ssh -c 'reboot'
+          vagrant ssh -c "echo 'hello world!'"
+          vagrant ssh -c 'uname -r'
           
       #- name: Checkout git
       #  run: |
