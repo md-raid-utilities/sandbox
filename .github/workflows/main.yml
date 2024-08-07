@@ -26,3 +26,4 @@ jobs:
           make defconfig
           make bzImage -j32
           make modules -j32
+          uname -r
