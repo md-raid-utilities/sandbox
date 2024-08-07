@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: VM login
         run: |
+          uname -r
           vagrant ssh
       - name: Checkout git
         run: |
