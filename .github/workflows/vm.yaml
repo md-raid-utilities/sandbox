@@ -9,40 +9,33 @@ jobs:
   build-kernel:
     runs-on: self-hosted
     steps:
-      - name: VM login
+      - name: VM Startup and Check
         run: |
           cd /home/ci/vagrant
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
-      - name: VM Reboot
+      - name: Checkout kernel source
         run: |
-          pwd
+          rm -rf linux
+          mkdir -p linux
+          cd linux
+          git init
+          git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          # just a random hash for quick repo population
+          git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          git log -1
+      - name: Build kernel
+        run: |
+          cd linux
+          make defconfig
+          make bzImage -j32
+          make modules -j32
+          uname -r
+      - name: VM Reboot and version check
+        run: |
           cd /home/ci/vagrant
-          pwd
           vagrant reload
-          vagrant ssh -c "echo 'hello world!'"
+          vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
-          
-      #- name: Checkout git
-      #  run: |
-      #    rm -rf linux
-      #    mkdir -p linux
-      #    cd linux
-      #    git init
-      #    # PL
-      #    git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
-      #    git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-      #    git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-      #    git log -1
-      #- name: Build kernel
-      #  run: |
-      #    cd linux
-      #    make defconfig
-      #    make bzImage -j32
-      #    make modules -j32
-      #    uname -r
-      #- name: Reboot kernel
-      #  run: |
-      #    reboot
-      #    uname -r
