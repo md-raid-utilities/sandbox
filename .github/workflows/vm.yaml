@@ -9,10 +9,6 @@ jobs:
   build-kernel:
     runs-on: self-hosted
     steps:
-      - name: VM login
-        run: |
-          uname -r
-          vagrant ssh
       - name: Checkout git
         run: |
           rm -rf linux
