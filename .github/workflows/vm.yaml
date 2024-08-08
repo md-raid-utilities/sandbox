@@ -65,6 +65,8 @@ jobs:
           echo 'now cd'
           vagrant ssh -c 'cd share'
           echo 'ls again'
+          vagrant ssh -c 'cd share'
+          echo 'ls one more timeagain'
           vagrant ssh -c 'ls -al'
           vagrant ssh -c 'cd linux'
           echo 'ls yet again'
