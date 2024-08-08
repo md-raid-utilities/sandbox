@@ -13,9 +13,6 @@ jobs:
         run: |
           # TODO restore clean snaphot of a build ready VM
           pwd
-          cd ../vagrant
-          pwd
-          pwd
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
