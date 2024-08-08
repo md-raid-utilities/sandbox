@@ -43,7 +43,7 @@ jobs:
       - name: Build kernel
         run: |
           pwd
-          cd ../share/linux
+          cd linux
           pwd
           make defconfig -j20
           make bzImage -j20
