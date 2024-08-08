@@ -12,41 +12,58 @@ jobs:
       - name: VM Startup and Check
         run: |
           # TODO restore clean snaphot of a build ready VM
-          # TODO, the path below needs to be based off the runner
-          #       service dir so each runner has its own VM
-          cd /home/ci/vagrant
+          pwd
+          cd vagrant
+          pwd
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
       - name: Checkout kernel source
         run: |
-          cd /home/ci/vagrant # TODO update
-          vagrant ssh -c 'rm -rf linux'
-          vagrant ssh -c 'mkdir -p linux'
-          vagrant ssh -c 'cd linux'
-          vagrant ssh -c 'git init'
-          vagrant ssh -c 'git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git'
+          #cd /home/ci/vagrant # TODO update
+          #vagrant ssh -c 'rm -rf linux'
+          #vagrant ssh -c 'mkdir -p linux'
+          #vagrant ssh -c 'cd linux'
+          #vagrant ssh -c 'git init'
+          #vagrant ssh -c 'git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git'
           # just a random hash for quick repo population, get this from PR
-          vagrant ssh -c 'git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
-          vagrant ssh -c 'git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
-          vagrant ssh -c 'git log -1'
+          #vagrant ssh -c 'git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
+          #vagrant ssh -c 'git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
+          #vagrant ssh -c 'git log -1'
+          cd share
+          rm -rf linux
+          mkdir -p linux
+          cd linux
+          git init
+          git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
+          # just a random hash for quick repo population, get this from PR
+          git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          git log -1
       - name: Build kernel
         run: |
-          cd /home/ci/vagrant # TODO update
-          vagrant ssh -c 'cd linux'
-          vagrant ssh -c 'make defconfig -j32' # TODO don't H/C core count
-          vagrant ssh -c 'make bzImage -j32'
-          vagrant ssh -c 'make modules -j32'
-          vagrant ssh -c ' sudo make install -j32'
+          pwd
+          cd share/linux
+          pwd
+          make defconfig -j20
+          make bzImage -j20
+          make modules -j20
+          cd ..
+          pwd
+          vagrant ssh -c 'cd share/linux'
+          vagrant ssh -c 'make modules_install -j16'
+          vagrant ssh -c ' sudo make install -j16'
           uname -r
       - name: VM Reboot and version check
         run: |
-          cd /home/ci/vagrant # TODO update path once 'serviceized'
+          pwd
+          cd vagrant 
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
       # TODO:  add testing steps
       - name: All done, cleanup
         run: |          
-          cd /home/ci/vagrant # TODO update path once 'serviceized'
+          cd vagrant # TODO update path once 'serviceized'
+          pwd
           vagrant halt
