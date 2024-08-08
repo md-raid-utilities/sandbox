@@ -70,7 +70,7 @@ jobs:
       - name: VM Reboot and version check
         run: |
           echo 'done'
-          pwd
+          ls -al
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
