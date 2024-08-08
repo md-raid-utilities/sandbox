@@ -60,7 +60,12 @@ jobs:
           pwd
           echo 'about to vagrant ssh from here'
           vagrant ssh -c 'pwd'
+          echo 'now ls'
+          vagrant ssh -c 'ls -al'
+          echo 'now cd'
           vagrant ssh -c 'cd /home/vagrant/share/share/linux'
+          echo 'ls again'
+          cagrant ssh -c 'ls -al'
           vagrant ssh -c 'pwd'
           echo 'about to make here' 
           vagrant ssh -c 'sudo make modules_install -j16'
