@@ -60,6 +60,7 @@ jobs:
           uname -r
       - name: VM Reboot and version check
         run: |
+          echo 'done'
           pwd
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
