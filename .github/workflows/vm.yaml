@@ -28,7 +28,9 @@ jobs:
           #vagrant ssh -c 'git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
           #vagrant ssh -c 'git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
           #vagrant ssh -c 'git log -1'
-          cd share
+          pwd
+          cd ../share
+          pwd
           rm -rf linux
           mkdir -p linux
           cd linux
