@@ -15,7 +15,7 @@ jobs:
           pwd
           cd vagrant
           pwd
-          exit
+          pwd
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
