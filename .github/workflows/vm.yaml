@@ -55,13 +55,13 @@ jobs:
           pwd
           echo '2'
           cd ..
-          pwd
+          ls -al
           echo 'about to vagrant ssh from here'
           vagrant ssh -c 'pwd'
           echo 'now ls'
           vagrant ssh -c 'ls -al'
-          echo 'now cd to linux'
-          vagrant ssh -c 'cd linux'
+          echo 'now cd to host linux'
+          vagrant ssh -c 'cd host/linux'
           vagrant ssh -c 'ls -al'
           echo 'about to make here' 
           vagrant ssh -c 'sudo make modules_install -j16'
