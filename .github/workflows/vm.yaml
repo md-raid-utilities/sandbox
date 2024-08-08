@@ -43,7 +43,7 @@ jobs:
       - name: Build kernel
         run: |
           pwd
-          cd share/linux
+          cd ../share/linux
           pwd
           make defconfig -j20
           make bzImage -j20
@@ -57,7 +57,6 @@ jobs:
       - name: VM Reboot and version check
         run: |
           pwd
-          cd vagrant 
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
