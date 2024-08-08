@@ -13,7 +13,7 @@ jobs:
         run: |
           # TODO restore clean snaphot of a build ready VM
           pwd
-          cd vagrant
+          cd ../vagrant
           pwd
           pwd
           vagrant up
