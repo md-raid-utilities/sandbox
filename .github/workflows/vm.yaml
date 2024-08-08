@@ -63,17 +63,9 @@ jobs:
           echo 'now ls'
           vagrant ssh -c 'ls -al'
           echo 'now cd to host'
-          vagrant ssh -c 'cd host'
-          vagrant ssh -c 'ls -al'
-          echo 'now cd to sandbox'
-          vagrant ssh -c 'cd sandbox'
-          vagrant ssh -c 'ls -al'
-          echo 'now cd to linux'
-          vagrant ssh -c 'cd linux'
-          vagrant ssh -c 'ls -al'
+          vagrant ssh -c 'cd host/sandbox/linux && ls -al && sudo make modules_install -j16'
           echo 'about to make here' 
-          vagrant ssh -c 'sudo make modules_install -j16'
-          vagrant ssh -c 'sudo make install -j16'
+          vagrant ssh -c 'cd host/sandbox/linux && ls -al && sudo make install -j16'
           uname -r
       - name: VM Reboot and version check
         run: |
