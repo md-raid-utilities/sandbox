@@ -51,7 +51,12 @@ jobs:
           make defconfig -j20
           make bzImage -j20
           make modules -j20
-          cd ../..
+          pwd
+          echo '1'
+          cd ..
+          pwd
+          echo '2'
+          cd ..
           pwd
           echo 'about to vagrant ssh from here'
           vagrant ssh -c 'pwd'
