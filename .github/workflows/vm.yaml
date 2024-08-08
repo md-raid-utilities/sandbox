@@ -1,4 +1,4 @@
-name: VM-sanbox-test
+name: VM-sandbox-test
 
 on:
   pull_request:
