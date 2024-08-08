@@ -61,7 +61,9 @@ jobs:
           echo 'about to vagrant ssh from here'
           vagrant ssh -c 'pwd'
           vagrant ssh -c 'cd share/share/linux'
-          vagrant ssh -c 'make modules_install -j16'
+          vagrant ssh -c 'pwd'
+          echo 'about to make here' 
+          vagrant ssh -c 'sudo make modules_install -j16'
           vagrant ssh -c 'sudo make install -j16'
           uname -r
       - name: VM Reboot and version check
