@@ -1,4 +1,5 @@
 name: VM-sandbox-test
+# tested with v1 vagrant snapshot
 
 on:
   pull_request:
@@ -12,30 +13,19 @@ jobs:
       - name: VM Startup and Check
         run: |
           # TODO restore clean snaphot of a build ready VM
+          cd ..
           ls -al
           vagrant up
-          vagrant ssh -c "echo 'hello world!'"
+          vagrant ssh -c "echo 'Fresh VM, hello world!'"
           vagrant ssh -c 'uname -r'
       - name: Checkout kernel source
         run: |
-          #cd /home/ci/vagrant # TODO update
-          #vagrant ssh -c 'rm -rf linux'
-          #vagrant ssh -c 'mkdir -p linux'
-          #vagrant ssh -c 'cd linux'
-          #vagrant ssh -c 'git init'
-          #vagrant ssh -c 'git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git'
-          # just a random hash for quick repo population, get this from PR
-          #vagrant ssh -c 'git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
-          #vagrant ssh -c 'git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c'
-          #vagrant ssh -c 'git log -1'
-          pwd
           ls -al
           cd ..
-          echo 'about to rm linux'
+          echo 'about to rm linux and prep the repo'
           rm -rf linux
           mkdir -p linux
           cd linux
-          pwd
           ls -al
           git init
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
@@ -47,24 +37,22 @@ jobs:
         run: |
           ls -al
           cd ../linux
-          pwd
-          echo 'make defconfig'
+          echo 'about to build on bare metal'
           make defconfig -j32
           make bzImage -j32
           make modules -j32
-          pwd
           cd ..
           ls -al
           echo 'about to vagrant ssh from here'
           vagrant ssh -c 'ls -al'
-          echo 'now cd to host'
+          echo 'now cd to NFS shared host dir and install on VM'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
-          echo 'about to make here' 
           vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
+          vagrant ssh -c "sudo grubby --set-default-index=2"
           uname -r
       - name: VM Reboot and version check
         run: |
-          echo 'done'
+          echo 'Reboot done, fire up VM and check uname'
           ls -al
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
@@ -72,6 +60,6 @@ jobs:
       # TODO:  add testing steps
       - name: All done, cleanup
         run: |          
-          cd vagrant # TODO update path once 'serviceized'
-          pwd
+          cd ..
+          ls -al
           vagrant halt
