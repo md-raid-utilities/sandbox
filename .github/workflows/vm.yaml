@@ -12,7 +12,7 @@ jobs:
       - name: VM Startup and Check
         run: |
           # TODO restore clean snaphot of a build ready VM
-          pwd
+          ls -al
           vagrant up
           vagrant ssh -c "echo 'hello world!'"
           vagrant ssh -c 'uname -r'
@@ -30,6 +30,7 @@ jobs:
           #vagrant ssh -c 'git log -1'
           pwd
           ls -al
+          cd ..
           echo 'about to rm linux'
           rm -rf linux
           mkdir -p linux
@@ -44,28 +45,22 @@ jobs:
           git log -1
       - name: Build kernel
         run: |
-          pwd
-          cd linux
+          ls -al
+          cd ../linux
           pwd
           echo 'make defconfig'
-          make defconfig -j20
-          make bzImage -j20
-          make modules -j20
+          make defconfig -j32
+          make bzImage -j32
+          make modules -j32
           pwd
-          echo '1'
-          cd ..
-          pwd
-          echo '2'
           cd ..
           ls -al
           echo 'about to vagrant ssh from here'
-          vagrant ssh -c 'pwd'
-          echo 'now ls'
           vagrant ssh -c 'ls -al'
           echo 'now cd to host'
-          vagrant ssh -c 'cd host/sandbox/linux && ls -al && sudo make modules_install -j16'
+          vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
           echo 'about to make here' 
-          vagrant ssh -c 'cd host/sandbox/linux && ls -al && sudo make install -j16'
+          vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
           uname -r
       - name: VM Reboot and version check
         run: |
