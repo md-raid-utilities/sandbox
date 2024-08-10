@@ -43,6 +43,7 @@ jobs:
           vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
           vagrant ssh -c "sudo grubby --info ALL"
+          # our VM clean image only has one index so 2 is always correct
           vagrant ssh -c "sudo grubby --set-default-index=2"
           vagrant ssh -c "sudo grubby --info ALL"
           uname -r
