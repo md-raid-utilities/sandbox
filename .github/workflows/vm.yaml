@@ -12,21 +12,18 @@ jobs:
     steps:
       - name: VM Startup and Check
         run: |
-          # TODO restore clean snaphot of a build ready VM
           cd ..
-          ls -al
-          vagrant up
+          echo 'Restoring clean VM image..."
+          vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "echo 'Fresh VM, hello world!'"
           vagrant ssh -c 'uname -r'
       - name: Checkout kernel source
         run: |
-          ls -al
           cd ..
-          echo 'about to rm linux and prep the repo'
+          echo 'Preparing Linux repo...'
           rm -rf linux
           mkdir -p linux
           cd linux
-          ls -al
           git init
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
           # just a random hash for quick repo population, get this from PR
@@ -35,18 +32,14 @@ jobs:
           git log -1
       - name: Build kernel
         run: |
-          ls -al
           cd ../linux
-          echo 'about to build on bare metal using oldconfig'
+          echo 'Compile Linux on bare metal...'
           cp /boot/config-`uname -r`* .config
           yes "" | make oldconfig
           make bzImage -j32
           make modules -j32
           cd ..
-          ls -al
-          echo 'about to vagrant ssh from here'
-          vagrant ssh -c 'ls -al'
-          echo 'now cd to NFS shared host dir and install on VM'
+          echo 'Install kernel in VM...'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
           vagrant ssh -c "sudo grubby --info ALL"
@@ -56,7 +49,6 @@ jobs:
       - name: VM Reboot and version check
         run: |
           echo 'Reboot done, fire up VM and check uname'
-          ls -al
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
