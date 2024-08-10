@@ -34,6 +34,7 @@ jobs:
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git log -1
+          # testing min config
           #echo "***********************"
           #echo "Copy minimal .config..."
           #echo "***********************"
