@@ -34,14 +34,19 @@ jobs:
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git log -1
+          echo "***********************"
+          echo "Copy minimal .config..."
+          echo "***********************"
+          cp ../.config .
+          ls -al
       - name: Build kernel
         run: |
           cd ../linux
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          cp /boot/config-`uname -r`* .config
-          yes "" | make oldconfig
+          #cp /boot/config-`uname -r`* .config
+          #yes "" | make oldconfig
           make bzImage -j32
           make modules -j32
           cd ..
