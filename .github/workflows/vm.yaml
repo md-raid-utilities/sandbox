@@ -13,14 +13,18 @@ jobs:
       - name: VM Startup and Check
         run: |
           cd ..
+          echo "***************************"
           echo "Restoring clean VM image..."
+          echo "***************************"
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "echo 'Fresh VM, hello world!'"
           vagrant ssh -c "uname -r"
       - name: Checkout kernel source
         run: |
           cd ..
+          echo "***********************"
           echo "Preparing Linux repo..."
+          echo "***********************"
           rm -rf linux
           mkdir -p linux
           cd linux
@@ -33,23 +37,29 @@ jobs:
       - name: Build kernel
         run: |
           cd ../linux
+          echo "******************************"
           echo "Compile Linux on bare metal..."
+          echo "******************************"
           cp /boot/config-`uname -r`* .config
           yes "" | make oldconfig
           make bzImage -j32
           make modules -j32
           cd ..
+          echo "***********************"
           echo "Install kernel in VM..."
+          echo "***********************"
           vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
           vagrant ssh -c "sudo grubby --info ALL"
-          # our VM clean image only has one index so 2 is always correct
-          vagrant ssh -c "sudo grubby --set-default-index=2"
+          # our VM clean image only has one index so 1 is always correct
+          vagrant ssh -c "sudo grubby --set-default-index=1"
           vagrant ssh -c "sudo grubby --info ALL"
           uname -r
       - name: VM Reboot and version check
         run: |
+          echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
+          echo "***************************************"
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
