@@ -13,14 +13,14 @@ jobs:
       - name: VM Startup and Check
         run: |
           cd ..
-          echo 'Restoring clean VM image..."
+          echo "Restoring clean VM image..."
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "echo 'Fresh VM, hello world!'"
-          vagrant ssh -c 'uname -r'
+          vagrant ssh -c "uname -r"
       - name: Checkout kernel source
         run: |
           cd ..
-          echo 'Preparing Linux repo...'
+          echo "Preparing Linux repo..."
           rm -rf linux
           mkdir -p linux
           cd linux
@@ -33,13 +33,13 @@ jobs:
       - name: Build kernel
         run: |
           cd ../linux
-          echo 'Compile Linux on bare metal...'
+          echo "Compile Linux on bare metal..."
           cp /boot/config-`uname -r`* .config
           yes "" | make oldconfig
           make bzImage -j32
           make modules -j32
           cd ..
-          echo 'Install kernel in VM...'
+          echo "Install kernel in VM..."
           vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
           vagrant ssh -c "sudo grubby --info ALL"
@@ -56,5 +56,5 @@ jobs:
       - name: All done, cleanup
         run: |          
           cd ..
-          ls -al
+          echo "Poweroff VM..."
           vagrant halt
