@@ -37,8 +37,9 @@ jobs:
         run: |
           ls -al
           cd ../linux
-          echo 'about to build on bare metal'
-          make defconfig -j32
+          echo 'about to build on bare metal using oldconfig'
+          cp /boot/config-`uname -r`* .config
+          yes "" | make oldconfig
           make bzImage -j32
           make modules -j32
           cd ..
@@ -48,7 +49,9 @@ jobs:
           echo 'now cd to NFS shared host dir and install on VM'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
           vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
+          vagrant ssh -c "sudo grubby --info ALL"
           vagrant ssh -c "sudo grubby --set-default-index=2"
+          vagrant ssh -c "sudo grubby --info ALL"
           uname -r
       - name: VM Reboot and version check
         run: |
