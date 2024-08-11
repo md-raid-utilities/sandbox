@@ -51,6 +51,8 @@ jobs:
           vagrant ssh -c "ls /boot -al"
           vagrant ssh -c "uname -r"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
+          echo 'after copy'
+          vagrant ssh -c "ls -al"
           # TODO:  once min config is deterinmed, use awk on .config
           # to remove totally not needed stuff to speed up build
           vagrant ssh -c "yes '' | make oldconfig"
