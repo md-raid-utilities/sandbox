@@ -43,11 +43,16 @@ jobs:
       - name: Build kernel
         run: |
           cd ../linux
+          echo "********************************"
+          echo "Prepare minimal .config on VM..."
+          echo "********************************"
+          vagrant ssh -c "cp /boot/config-`uname -r`* .config"
+          # TODO:  once min config is deterinmed, use awk on .config
+          # to remove totally not needed stuff to speed up build
+          vagrant ssh -c "yes '' | make oldconfig"
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          cp /boot/config-`uname -r`* .config
-          yes "" | make oldconfig
           make bzImage -j32
           make modules -j32
           cd ..
