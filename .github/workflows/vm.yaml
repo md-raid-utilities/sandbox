@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-kernel:
-    runs-on: inspur7 #
+    runs-on: inspur7
     steps:
       - name: VM Startup and Check
         run: |
@@ -41,8 +41,8 @@ jobs:
           echo "Prepare minimal .config on VM..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
-          # TODO:  once min config is deterinmed, use awk on .config now
-          # to remove totally not needed stuff to speed up build
+          # TODO: WIP on exlcuding stuff
+          vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
           vagrant ssh -c "cd host/linux && yes '' | make oldconfig"
           echo "******************************"
           echo "Compile Linux on bare metal..."
@@ -53,9 +53,8 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
-          vagrant ssh -c 'cd host/linux && ls -al && sudo make modules_install -j32'
-          vagrant ssh -c 'cd host/linux && ls -al && sudo make install -j32'
-          vagrant ssh -c "sudo grubby --info ALL"
+          vagrant ssh -c 'cd host/linux && sudo make modules_install -j32'
+          vagrant ssh -c 'cd host/linux && sudo make install -j32'
           # our VM clean image only has one index so 1 is always correct
           vagrant ssh -c "sudo grubby --set-default-index=1"
           vagrant ssh -c "sudo grubby --info ALL"
