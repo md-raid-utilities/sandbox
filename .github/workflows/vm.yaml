@@ -46,6 +46,7 @@ jobs:
           echo "********************************"
           echo "Prepare minimal .config on VM..."
           echo "********************************"
+          vagrant ssh -c "ls -al"
           vagrant ssh -c "ls host/linux -al"
           vagrant ssh -c "ls /boot -al"
           vagrant ssh -c "uname -r"
