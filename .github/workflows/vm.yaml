@@ -17,7 +17,9 @@ jobs:
           echo "Restoring clean VM image..."
           echo "***************************"
           vagrant snapshot restore clean_vm_v1
+          vagrant ssh -c "sudo systemctl restart chronyd"
           vagrant ssh -c "echo 'Fresh VM, hello world!'"
+          vagrant ssh -c "sudo date"
           vagrant ssh -c "uname -r"
       - name: Checkout kernel source
         run: |
