@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-kernel:
-    runs-on: inspur6
+    runs-on: test-bael
     steps:
       - name: VM Startup and Check
         run: |
