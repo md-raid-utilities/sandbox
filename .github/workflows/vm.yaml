@@ -31,7 +31,6 @@ jobs:
           echo "***********************"
           rm -rf linux
           mkdir -p linux
-          # strip.sh removes kernel options we don't care about
           cd linux
           git init
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
@@ -50,7 +49,8 @@ jobs:
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
           # TODO: WIP on exlcuding more stuff
           # this seems to only work from a .sh file on the VM
-          echo "Runnings strip.sh to remove config options"
+          echo "Running strip.sh to remove config options"
+          cat strip.sh
           ./strip.sh
           sleep 4
           vagrant ssh -c "cd host/linux && n '' | make oldconfig"
