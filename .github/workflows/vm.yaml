@@ -47,13 +47,20 @@ jobs:
           echo "Prepare minimal .config on VM..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-             cd host/linux && yes '' | make oldconfig"
+             cd host/linux && yes '' | make oldconfig && touch config_done"
+          while [ ! -f config_done ]; do
+            echo "Waiting for config file file creation..."
+            sleep 1
+          done
           #vagrant ssh -c "cd host/linux && n '' | make oldconfig"
           # TODO: WIP on exlcuding more stuff
           # this seems to only work from a .sh file on the VM
           echo "Running strip.sh to remove config options..."
           ./strip.sh
-          sleep 3
+          while [ ! -f up_done ]; do
+            echo "Waiting for config file update..."
+            sleep 1
+          done
           echo "Done"
       - name: Build kernel
         run: |
