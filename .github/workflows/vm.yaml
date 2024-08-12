@@ -51,9 +51,9 @@ jobs:
           # TODO: WIP on exlcuding more stuff
           # this seems to only work from a .sh file on the VM
           echo "Runnings strip.sh to remove config options"
-          vagrant ssh -c "cd host/linux && ./strip.sh"
-          sleep 2
-          vagrant ssh -c "cd host/linux && yes '' | make oldconfig"
+          ./strip.sh
+          sleep 4
+          vagrant ssh -c "cd host/linux && n '' | make oldconfig"
       - name: Build kernel
         run: |
           cd ../linux
