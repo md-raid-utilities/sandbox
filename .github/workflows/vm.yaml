@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-kernel:
+  per-patch-testing:
     runs-on: inspur7
     steps:
       - name: VM Startup and Check
