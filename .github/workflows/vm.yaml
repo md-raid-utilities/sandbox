@@ -46,8 +46,8 @@ jobs:
           # TODO: WIP on exlcuding stuff
           vagrant ssh -c "cd host/linux && yes '' | make oldconfig"
           echo "Set CONFIG_VIRTUALIZATION=N"
+          vagrant ssh -c "cd host/linux && ls -al"
           vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
-          vagrant ssh -c "cd host/linux && cat .config | grep CONFIG_VIRTUALIZATION"
       - name: Build kernel
         run: |
           cd ../linux
