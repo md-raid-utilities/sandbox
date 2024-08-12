@@ -29,6 +29,8 @@ jobs:
           echo "***********************"
           rm -rf linux
           mkdir -p linux
+          # strip.sh removes kernel options we don't care about
+          cp strip.sh linux
           cd linux
           git init
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
@@ -47,7 +49,8 @@ jobs:
           vagrant ssh -c "cd host/linux && yes '' | make oldconfig"
           echo "Set CONFIG_VIRTUALIZATION=N"
           vagrant ssh -c "cd host/linux && ls -al"
-          vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
+          vagrant ssh -c "cd host/linux && ./strip.sh"
+          #vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
       - name: Build kernel
         run: |
           cd ../linux
