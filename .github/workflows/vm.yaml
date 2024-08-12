@@ -39,8 +39,8 @@ jobs:
           git log -1
       - name: Configure kernel
         run: |
-          cp strip.sh linux
-          cd ../linux
+          cp ../strip.sh linux
+          cd linux
           echo "********************************"
           echo "Prepare minimal .config on VM..."
           echo "********************************"
