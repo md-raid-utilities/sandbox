@@ -41,6 +41,8 @@ jobs:
       - name: Configure kernel
         run: |
           cd ..
+          # Strip out stuff we don't need to make build go faster, not working out
+          # to save all that much time though.  Needs more experimenting
           cp strip.sh linux
           cd linux
           echo "********************************"
@@ -48,6 +50,7 @@ jobs:
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
           echo "Running strip.sh to remove config options..."
+          # strip.sh will touch 'up_done' when complete
           ./strip.sh
           while [ ! -f up_done ]; do
             echo "Waiting for config file update..."
