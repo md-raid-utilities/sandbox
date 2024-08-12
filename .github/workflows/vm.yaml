@@ -41,18 +41,9 @@ jobs:
           git log -1
       - name: Configure kernel
         run: |
-          echo 'start'
-          pwd
-          ls -al
-          ls .. -al
-          echo 'after cd ..'
           cd ..
-          pwd
-          ls -al
           cp strip.sh linux
           cd linux
-          echo 'in linux dr'
-          ls -al
           echo "********************************"
           echo "Prepare minimal .config on VM..."
           echo "********************************"
