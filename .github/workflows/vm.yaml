@@ -10,7 +10,7 @@ jobs:
   per-patch-testing:
     runs-on: inspur7
     steps:
-      - name: VM Startup and Check
+      - name: VM startup and check
         run: |
           cd ..
           echo "***************************"
@@ -30,7 +30,6 @@ jobs:
           rm -rf linux
           mkdir -p linux
           # strip.sh removes kernel options we don't care about
-          cp strip.sh linux
           cd linux
           git init
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
@@ -40,6 +39,7 @@ jobs:
           git log -1
       - name: Configure kernel
         run: |
+          cp strip.sh linux
           cd ../linux
           echo "********************************"
           echo "Prepare minimal .config on VM..."
@@ -47,10 +47,9 @@ jobs:
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
           # TODO: WIP on exlcuding stuff
           vagrant ssh -c "cd host/linux && yes '' | make oldconfig"
-          echo "Set CONFIG_VIRTUALIZATION=N"
-          vagrant ssh -c "cd host/linux && ls -al"
+          # this seems to only work from a .sh file on the VM
+          echo "Runnings strip.sh to remove config options"
           vagrant ssh -c "cd host/linux && ./strip.sh"
-          #vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
       - name: Build kernel
         run: |
           cd ../linux
@@ -69,7 +68,7 @@ jobs:
           vagrant ssh -c "sudo grubby --set-default-index=1"
           vagrant ssh -c "sudo grubby --info ALL"
           uname -r
-      - name: VM Reboot and version check
+      - name: VM reboot and version check
         run: |
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
