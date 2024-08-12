@@ -36,7 +36,7 @@ jobs:
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git log -1
-      - name: Build kernel
+      - name: Configure kernel
         run: |
           cd ../linux
           echo "********************************"
@@ -44,8 +44,13 @@ jobs:
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
           # TODO: WIP on exlcuding stuff
-          vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
           vagrant ssh -c "cd host/linux && yes '' | make oldconfig"
+          echo "Set CONFIG_VIRTUALIZATION=N"
+          vagrant ssh -c "cd host/linux && gawk -i inplace '{gsub(/CONFIG_VIRTUALIZATION=y/, "CONFIG_VIRTUALIZATION=n")} 1' .config"
+          vagrant ssh -c "cd host/linux && cat .config | grep CONFIG_VIRTUALIZATION"
+      - name: Build kernel
+        run: |
+          cd ../linux
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
