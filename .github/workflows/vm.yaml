@@ -54,7 +54,7 @@ jobs:
           echo "Runnings strip.sh to remove config options"
           echo 'start sleep'
           sleep 5
-          echo 'stop sleep''
+          echo 'stop sleep'
           vagrant ssh -c "cd host/linux && ./strip.sh"
       - name: Build kernel
         run: |
