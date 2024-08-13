@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6
+    runs-on: inspur7
     steps:
       - name: VM startup and check
         run: |
@@ -21,8 +21,7 @@ jobs:
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo systemctl restart chronyd && sudo chronyc -a makestep"
           vagrant ssh -c "echo 'Fresh VM, hello world!'"
-          vagrant ssh -c "sudo date"
-          vagrant ssh -c "uname -r"
+          vagrant ssh -c "date && uname -r"
       - name: Checkout kernel source
         run: |
           cd ..
@@ -37,7 +36,6 @@ jobs:
           # just a random hash for quick repo population, get this from PR
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-          sleep 1
       - name: Configure kernel
         run: |
           cd ../linux
@@ -50,7 +48,6 @@ jobs:
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID1 is not set/, "CONFIG_MD_RAID1=y")} 1' .config
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID10 is not set/, "CONFIG_MD_RAID10=y")} 1' .config
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID456 is not set/, "CONFIG_MD_RAID456=y")} 1' .config
-          sleep 1
       - name: Build kernel
         run: |
           cd ../linux
@@ -67,7 +64,6 @@ jobs:
           # our VM clean image only has one index so 1 is always correct
           vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
           uname -r
-          sleep 1
       - name: VM reboot and version check
         run: |
           echo "***************************************"
