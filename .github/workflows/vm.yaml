@@ -38,8 +38,9 @@ jobs:
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
       - name: Configure kernel
         run: |
+          cd ..
           cp config.sh linux
-          cd ../linux
+          cd linux
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
