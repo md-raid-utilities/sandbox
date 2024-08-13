@@ -39,29 +39,16 @@ jobs:
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
       - name: Configure kernel
         run: |
-          cd ..
-          # Add in RAID modules
-          cp config_up.sh linux
-          cd linux
+          cd ../linux
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-            cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
-          while [ ! -f config_done ]; do
-            echo "Waiting for config file creation..."
-            sleep 2
-          done
+            cd host/linux && yes '' | make localmodconfig -j20"
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID0 is not set/, "CONFIG_MD_RAID0=y")} 1' .config
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID1 is not set/, "CONFIG_MD_RAID1=y")} 1' .config
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID10 is not set/, "CONFIG_MD_RAID10=y")} 1' .config
           gawk -i inplace '{gsub(/# CONFIG_MD_RAID456 is not set/, "CONFIG_MD_RAID456=y")} 1' .config
-          #echo "Running config_up.sh to update config options..."
-          #./config_up.sh
-          #while [ ! -f up_done ]; do
-          #  echo "Waiting for config file update..."
-          #  sleep 2
-          #done
       - name: Build kernel
         run: |
           cd ../linux
@@ -73,13 +60,9 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
-          vagrant ssh -c 'cd host/linux && sudo make modules_install -j20 && \
-            sudo make install -j20 && touch vm_make_done'
+          vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
+            sudo make install -j20"
           # our VM clean image only has one index so 1 is always correct
-          while [ ! -f vm_make_done ]; do
-            echo "Waiting for VM kernel installation..."
-            sleep 5
-          done
           vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
           uname -r
       - name: VM reboot and version check
