@@ -38,16 +38,18 @@ jobs:
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
       - name: Configure kernel
         run: |
+          cp config.sh linux
           cd ../linux
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
             cd host/linux && yes '' | make localmodconfig -j20"
-          gawk -i inplace '{gsub(/# CONFIG_MD_RAID0 is not set/, "CONFIG_MD_RAID0=y")} 1' .config
-          gawk -i inplace '{gsub(/# CONFIG_MD_RAID1 is not set/, "CONFIG_MD_RAID1=y")} 1' .config
-          gawk -i inplace '{gsub(/# CONFIG_MD_RAID10 is not set/, "CONFIG_MD_RAID10=y")} 1' .config
-          gawk -i inplace '{gsub(/# CONFIG_MD_RAID456 is not set/, "CONFIG_MD_RAID456=y")} 1' .config
+          ./config.sh
+          while [ ! -f ./config_done ]; do
+            echo "Waiting for config update..."
+            sleep 2
+          done
       - name: Build kernel
         run: |
           cd ../linux
