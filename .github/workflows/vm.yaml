@@ -48,9 +48,9 @@ jobs:
           # to save all that much time though.  Needs more experimenting
           cp strip.sh linux
           cd linux
-          echo "**************************"
-          echo "Prepare minimal .config..."
-          echo "**************************"
+          echo "********************************"
+          echo "Prepare minimal kernel config..."
+          echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
             cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
           while [ ! -f config_done ]; do
@@ -76,11 +76,18 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
-          vagrant ssh -c 'cd host/linux && sudo make modules_install -j32'
-          vagrant ssh -c 'cd host/linux && sudo make install -j32'
+          vagrant ssh -c 'cd host/linux && sudo make modules_install -j32 && touch mmi_done'
+          while [ ! -f mmi_done ]; do
+            echo "Waiting for make modules_install to finish..."
+            sleep 2
+          done
+          vagrant ssh -c 'cd host/linux && sudo make install -j32 && touch mi_done'
+          while [ ! -f mi_done ]; do
+            echo "Waiting for make install to finish..."
+            sleep 2
+          done
           # our VM clean image only has one index so 1 is always correct
-          vagrant ssh -c "sudo grubby --set-default-index=1"
-          vagrant ssh -c "sudo grubby --info ALL"
+          vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
           uname -r
       - name: VM reboot and version check
         run: |
