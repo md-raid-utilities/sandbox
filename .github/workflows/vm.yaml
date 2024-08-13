@@ -44,9 +44,8 @@ jobs:
       - name: Configure kernel
         run: |
           cd ..
-          # Strip out stuff we don't need to make build go faster, not working out
-          # to save all that much time though.  Needs more experimenting
-          cp strip.sh linux
+          # Add in RAID modules
+          cp config_up.sh linux
           cd linux
           echo "********************************"
           echo "Prepare minimal kernel config..."
@@ -57,13 +56,12 @@ jobs:
             echo "Waiting for config file file copy..."
             sleep 2
           done
-          #echo "Running strip.sh to remove config options..."
-          # strip.sh will touch 'up_done' when complete
-          #./strip.sh
-          #while [ ! -f up_done ]; do
-          #  echo "Waiting for config file update..."
-          #  sleep 2
-          ##done
+          echo "Running config_up.sh to update config options..."
+          ./config_up.sh
+          while [ ! -f up_done ]; do
+            echo "Waiting for config file update..."
+            sleep 2
+          done
       - name: Build kernel
         run: |
           cd ../linux
@@ -76,17 +74,13 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
-          vagrant ssh -c 'cd host/linux && sudo make modules_install -j32 && touch mmi_done'
-          while [ ! -f mmi_done ]; do
-            echo "Waiting for make modules_install to finish..."
-            sleep 2
-          done
-          vagrant ssh -c 'cd host/linux && sudo make install -j32 && touch mi_done'
-          while [ ! -f mi_done ]; do
-            echo "Waiting for make install to finish..."
-            sleep 2
-          done
+          vagrant ssh -c 'cd host/linux && sudo make modules_install -j20 && \
+            sudo make install -j20 && touch vm_make_done'
           # our VM clean image only has one index so 1 is always correct
+          while [ ! -f vm_make_done ]; do
+            echo "Waiting for config file update..."
+            sleep 5
+          done
           vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
           uname -r
       - name: VM reboot and version check
