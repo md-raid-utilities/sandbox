@@ -32,14 +32,10 @@ jobs:
           rm -rf linux
           mkdir -p linux
           cd linux
-          echo 'ginit'
           git init
-          echo 'remote add'
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
           # just a random hash for quick repo population, get this from PR
-          echo 'fetch'
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-          echo 'reset'
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
       - name: Configure kernel
         run: |
@@ -56,12 +52,16 @@ jobs:
             echo "Waiting for config file creation..."
             sleep 2
           done
-          echo "Running config_up.sh to update config options..."
-          ./config_up.sh
-          while [ ! -f up_done ]; do
-            echo "Waiting for config file update..."
-            sleep 2
-          done
+          gawk -i inplace '{gsub(/# CONFIG_MD_RAID0 is not set/, "CONFIG_MD_RAID0=y")} 1' .config
+          gawk -i inplace '{gsub(/# CONFIG_MD_RAID1 is not set/, "CONFIG_MD_RAID1=y")} 1' .config
+          gawk -i inplace '{gsub(/# CONFIG_MD_RAID10 is not set/, "CONFIG_MD_RAID10=y")} 1' .config
+          gawk -i inplace '{gsub(/# CONFIG_MD_RAID456 is not set/, "CONFIG_MD_RAID456=y")} 1' .config
+          #echo "Running config_up.sh to update config options..."
+          #./config_up.sh
+          #while [ ! -f up_done ]; do
+          #  echo "Waiting for config file update..."
+          #  sleep 2
+          #done
       - name: Build kernel
         run: |
           cd ../linux
