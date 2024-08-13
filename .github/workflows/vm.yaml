@@ -45,9 +45,9 @@ jobs:
           # to save all that much time though.  Needs more experimenting
           cp strip.sh linux
           cd linux
-          echo "********************************"
-          echo "Prepare minimal .config on VM..."
-          echo "********************************"
+          echo "**************************"
+          echo "Prepare minimal .config..."
+          echo "**************************"
           #vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
           #  cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
