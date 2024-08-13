@@ -53,7 +53,7 @@ jobs:
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
             cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
           while [ ! -f config_done ]; do
-            echo "Waiting for config file file copy..."
+            echo "Waiting for config file creation..."
             sleep 2
           done
           echo "Running config_up.sh to update config options..."
@@ -70,7 +70,6 @@ jobs:
           echo "******************************"
           make bzImage -j32
           make modules -j32
-          cd ..
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
@@ -78,7 +77,7 @@ jobs:
             sudo make install -j20 && touch vm_make_done'
           # our VM clean image only has one index so 1 is always correct
           while [ ! -f vm_make_done ]; do
-            echo "Waiting for config file update..."
+            echo "Waiting for VM kernel installation..."
             sleep 5
           done
           vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
