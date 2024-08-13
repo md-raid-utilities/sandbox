@@ -50,12 +50,13 @@ jobs:
           echo "********************************"
           #vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
           #  cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
-          vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-            cd host/linux && make localmodconfig -j20 && touch config_done"
-          while [ ! -f config_done ]; do
-            echo "Waiting for config file file creation..."
+          vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config"
+          while [ ! -f .config ]; do
+            echo "Waiting for config file file copy..."
             sleep 2
           done
+          echo "Run make localmodconfig on bare metal..."
+          yes '' | make localmodconfig -j32
           #echo "Running strip.sh to remove config options..."
           # strip.sh will touch 'up_done' when complete
           #./strip.sh
