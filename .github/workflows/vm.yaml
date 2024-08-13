@@ -48,8 +48,10 @@ jobs:
           echo "********************************"
           echo "Prepare minimal .config on VM..."
           echo "********************************"
+          #vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
+          #  cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-            cd host/linux && yes '' | make localmodconfig -j20 && touch config_done"
+            cd host/linux && make localmodconfig -j20 && touch config_done"
           while [ ! -f config_done ]; do
             echo "Waiting for config file file creation..."
             sleep 2
