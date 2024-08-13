@@ -32,7 +32,7 @@ jobs:
           rm -rf linux
           mkdir -p linux
           cd linux
-          echo 'init'
+          echo 'ginit'
           git init
           echo 'remote add'
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
