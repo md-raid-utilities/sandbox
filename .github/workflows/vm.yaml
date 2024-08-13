@@ -51,6 +51,7 @@ jobs:
             echo "Waiting for config update..."
             sleep 2
           done
+          sleep 3
       - name: Build kernel
         run: |
           cd ../linux
