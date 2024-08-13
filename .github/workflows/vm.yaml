@@ -54,13 +54,13 @@ jobs:
             echo "Waiting for config file file creation..."
             sleep 2
           done
-          echo "Running strip.sh to remove config options..."
+          #echo "Running strip.sh to remove config options..."
           # strip.sh will touch 'up_done' when complete
-          ./strip.sh
-          while [ ! -f up_done ]; do
-            echo "Waiting for config file update..."
-            sleep 2
-          done
+          #./strip.sh
+          #while [ ! -f up_done ]; do
+          #  echo "Waiting for config file update..."
+          #  sleep 2
+          ##done
       - name: Build kernel
         run: |
           cd ../linux
