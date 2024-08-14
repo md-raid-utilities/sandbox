@@ -45,12 +45,8 @@ jobs:
           echo "Prepare minimal kernel config..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-            cd host/linux && yes '' | make localmodconfig -j20"
-          ./config.sh
-          while [ ! -f ./config_done ]; do
-            echo "Waiting for config update..."
-            sleep 2
-          done
+            cd host/linux && yes '' | make localmodconfig -j20 && \
+            ./config.sh"
       - name: Build kernel
         run: |
           cd ../linux
