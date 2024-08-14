@@ -83,3 +83,4 @@ jobs:
           cd ..
           echo "Poweroff VM..."
           vagrant halt
+          rm -rf linux
