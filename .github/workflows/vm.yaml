@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur7
+    runs-on: inspur6
     steps:
       - name: VM startup and check
         run: |
@@ -28,13 +28,19 @@ jobs:
           echo "***********************"
           echo "Preparing Linux repo..."
           echo "***********************"
+          echo "rm"
           rm -rf linux
+          ehch "mkdir"
           mkdir -p linux
           cd linux
+          echo "init"
           git init
+          echo "remote"
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
           # just a random hash for quick repo population, get this from PR
+          echo "fetch"
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          echo "reset"
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
       - name: Configure kernel
         run: |
