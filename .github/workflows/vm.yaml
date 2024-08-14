@@ -30,7 +30,7 @@ jobs:
           echo "***********************"
           echo "rm"
           rm -rf linux
-          ehch "mkdir"
+          echo "mkdir"
           mkdir -p linux
           cd linux
           echo "init"
