@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6
+    runs-on: inspur7
     steps:
       - name: VM startup and check
         run: |
@@ -51,7 +51,6 @@ jobs:
             echo "Waiting for config update..."
             sleep 2
           done
-          sleep 3
       - name: Build kernel
         run: |
           cd ../linux
