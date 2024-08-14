@@ -36,7 +36,9 @@ jobs:
           # just a random hash for quick repo population, get this from PR
           echo "Fetching code..."
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          echo "Fetch Done, resetting..."
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          echo "Ready to configure..."
       - name: Configure kernel
         run: |
           cd ..
