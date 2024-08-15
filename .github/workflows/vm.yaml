@@ -47,12 +47,9 @@ jobs:
           echo "Prepare minimal kernel config..."
           echo "********************************"
           pwd
-          ls -al
-          echo "NOW VM"
-          vagrant ssh -c "pwd && ls -al"
           #vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
           #  cd host/linux && yes '' | make localmodconfig -j20 && ./config.sh"
-          vagrant ssh -c "./config.sh"
+          vagrant ssh -c "cd host/linux && ./config.sh"
       - name: Build kernel
         run: |
           cd ../linux
@@ -80,7 +77,9 @@ jobs:
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
-      # TODO: add testing steps
+      - name: Execute tests
+        run: |
+          echo "Under construction..."
       - name: All done, cleanup
         run: |          
           cd ..
