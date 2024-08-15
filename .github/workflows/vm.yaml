@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6-2
+    runs-on: inspur6
     steps:
       - name: VM startup and check
         run: |
@@ -60,6 +60,9 @@ jobs:
           echo "******************************"
           make bzImage -j32
           make modules -j32
+      - name: Install kernel
+        run: |
+          cd ..
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
