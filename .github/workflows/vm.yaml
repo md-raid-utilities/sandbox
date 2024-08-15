@@ -48,22 +48,8 @@ jobs:
           echo "Prepare minimal kernel config..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-            cd host/linux && yes '' | make localmodconfig -j20" # && \
-            #./config.sh"
-          echo "Turn on CONFIG_MD_RAID0"
-          vagrant ssh -c "cd host/linux && \
-            gawk -i inplace '{gsub(/# CONFIG_MD_RAID0 is not set/, 'CONFIG_MD_RAID0=y')} 1' .config"
-          echo "Turn on CONFIG_MD_RAID1"
-          vagrant ssh -c "cd host/linux && \
-            gawk -i inplace '{gsub(/# CONFIG_MD_RAID1 is not set/, 'CONFIG_MD_RAID1=y')} 1' .config"
-          echo "Turn on CONFIG_MD_RAID10"
-          vagrant ssh -c "cd host/linux && \
-            gawk -i inplace '{gsub(/# CONFIG_MD_RAID10 is not set/, 'CONFIG_MD_RAID10=y')} 1' .config"
-          echo "Turn on CONFIG_MD_RAI4560"
-          vagrant ssh -c "cd host/linux && \
-            gawk -i inplace '{gsub(/# CONFIG_MD_RAID456 is not set/, 'CONFIG_MD_RAID456=y')} 1' .config"
-          echo "Done configuring kernel"
-    
+            cd host/linux && yes '' | make localmodconfig -j20 && ./config.sh"
+          echo "Turn on CONFIG_MD_RAID0"   
       - name: Build kernel
         run: |
           cd ../linux
@@ -77,7 +63,7 @@ jobs:
           echo "***********************"
           vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
             sudo make install -j20"
-          # our VM clean image only has one index so 1 is always correct
+          # our VM clean image only has one index (0) so 1 is always correct
           vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
           uname -r
       - name: VM reboot and version check
@@ -88,10 +74,11 @@ jobs:
           vagrant reload
           vagrant ssh -c "echo 'Reboot done, hello world!'"
           vagrant ssh -c 'uname -r'
-      # TODO:  add testing steps
+      # TODO: add testing steps
       - name: All done, cleanup
         run: |          
           cd ..
           echo "Cleaning up..."
+          # TODO: add testing cleanup
           vagrant halt
           rm -rf linux
