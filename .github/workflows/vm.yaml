@@ -48,8 +48,22 @@ jobs:
           echo "Prepare minimal kernel config..."
           echo "********************************"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-            cd host/linux && yes '' | make localmodconfig -j20 && \
-            ./config.sh"
+            cd host/linux && yes '' | make localmodconfig -j20" # && \
+            #./config.sh"
+          echo "Turn on CONFIG_MD_RAID0"
+          vagrant ssh -c "cd host/linux && \
+            gawk -i inplace '{gsub(/# CONFIG_MD_RAID0 is not set/, 'CONFIG_MD_RAID0=y')} 1' .config"
+          echo "Turn on CONFIG_MD_RAID1"
+          vagrant ssh -c "cd host/linux && \
+            gawk -i inplace '{gsub(/# CONFIG_MD_RAID1 is not set/, 'CONFIG_MD_RAID1=y')} 1' .config"
+          echo "Turn on CONFIG_MD_RAID10"
+          vagrant ssh -c "cd host/linux && \
+            gawk -i inplace '{gsub(/# CONFIG_MD_RAID10 is not set/, 'CONFIG_MD_RAID10=y')} 1' .config"
+          echo "Turn on CONFIG_MD_RAI4560"
+          vagrant ssh -c "cd host/linux && \
+            gawk -i inplace '{gsub(/# CONFIG_MD_RAID456 is not set/, 'CONFIG_MD_RAID456=y')} 1' .config"
+          echo "Done configuring kernel"
+    
       - name: Build kernel
         run: |
           cd ../linux
