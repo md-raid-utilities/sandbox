@@ -47,6 +47,10 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
+          pwd
+          ls -al
+          echo "NOW VM"
+          vagrant ssh -c "pwd && ls -al"
           vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
             cd host/linux && yes '' | make localmodconfig -j20 && ./config.sh"
       - name: Build kernel
