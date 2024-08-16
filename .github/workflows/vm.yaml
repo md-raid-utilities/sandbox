@@ -47,16 +47,13 @@ jobs:
           echo "Prepare minimal kernel config..."
           echo "********************************"
           vagrant ssh -c "cd host/linux && ./config.sh"
-          cd linux
-          truncate -s +0 include/config/auto.conf
-          echo "XXXXXX"
       - name: Build kernel
         run: |
           cd ../linux
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          make bzImage -j32
+          make -d bzImage -j32
           make modules -j32
       - name: Install kernel
         run: |
