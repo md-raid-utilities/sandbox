@@ -22,9 +22,32 @@ jobs:
           echo "***************************"
           ls run*
           vagrant snapshot restore clean_vm_v1
-          vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
-            sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
-          vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "XXXXXXXXX"
+            vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
+              sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          #vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
+          #  sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "XXXXXXXXX"
+            vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          #vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
       - name: Checkout kernel source
         run: |
           cd ..
@@ -54,7 +77,6 @@ jobs:
           MAX_RETRIES=3
           RETRY_DELAY=5
           for i in $(seq 1 $MAX_RETRIES); do
-            echo "XXXXXXXXX"
             vagrant ssh -c "cd host/linux && ./config.sh"
             if [ $? -eq 0 ]; then
               break
@@ -78,19 +100,49 @@ jobs:
           echo "Install kernel in VM..."
           echo "***********************"
           vagrant up
-          vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
-            sudo make install -j20"
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
+              sudo make install -j20"
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          #vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
+          #  sudo make install -j20"
           # our VM clean image only has one index (0) so 1 is always correct
-          vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
-          uname -r
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          #vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
       - name: VM reboot and version check
         run: |
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
           echo "***************************************"
           vagrant reload
-          vagrant ssh -c "echo 'Reboot done, hello world!'"
-          vagrant ssh -c 'uname -r'
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          #vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
+          #vagrant ssh -c 'uname -r'
       - name: Execute tests
         run: |
           echo "Under construction..."
