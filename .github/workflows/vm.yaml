@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6
+    runs-on: inspur6-2
     steps:
       - uses: actions/checkout@v4
       - name: VM startup and check
@@ -29,7 +29,7 @@ jobs:
           echo "***********************"
           echo "Preparing Linux repo..."
           echo "***********************"
-          restart chronyd && sudo chronyc -a makestep
+          systemctl restart chronyd && sudo chronyc -a makestep
           mkdir -p linux
           cd linux
           git init
