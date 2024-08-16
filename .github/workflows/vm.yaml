@@ -20,6 +20,7 @@ jobs:
           echo "***************************"
           echo "Restoring clean VM image..."
           echo "***************************"
+          ls -al
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
             sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
