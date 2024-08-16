@@ -50,6 +50,7 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
+          # Just testing this rety mechanism...
           MAX_RETRIES=3
           RETRY_DELAY=5
           for i in $(seq 1 $MAX_RETRIES); do
@@ -68,8 +69,8 @@ jobs:
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          make bzImage -j32
-          make modules -j32
+          make bzImage -j16
+          make modules -j16
       - name: Install kernel
         run: |
           cd ..
