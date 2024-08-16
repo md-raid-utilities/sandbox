@@ -65,6 +65,7 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
+          vagrant up
           vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
             sudo make install -j20"
           # our VM clean image only has one index (0) so 1 is always correct
