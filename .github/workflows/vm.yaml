@@ -48,7 +48,8 @@ jobs:
           echo "********************************"
           vagrant ssh -c "cd host/linux && ./config.sh"
           cd linux
-          truncate -s +0 ./.config
+          truncate -s +0 include/config/auto.conf
+          echo "XXXXXX"
       - name: Build kernel
         run: |
           cd ../linux
