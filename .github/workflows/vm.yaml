@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6-all
+    runs-on: inspur7-all
     steps:
       - uses: actions/checkout@v4
       - name: VM startup and check
@@ -20,7 +20,7 @@ jobs:
           echo "***************************"
           echo "Restoring clean VM image..."
           echo "***************************"
-          ls -al
+          ls run*
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
             sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
