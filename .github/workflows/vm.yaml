@@ -53,7 +53,9 @@ jobs:
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          make -d bzImage -j32
+          make bzImage -j32 > make.out
+          cp make.out ..
+          cat make.out
           make modules -j32
       - name: Install kernel
         run: |
