@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6
+    runs-on: inspur6-2
     steps:
       - name: VM startup and check
         run: |
@@ -21,8 +21,7 @@ jobs:
           echo "***************************"
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo systemctl restart chronyd && sudo chronyc -a makestep"
-          vagrant ssh -c "echo 'Fresh VM, hello world!'"
-          vagrant ssh -c "date && uname -r && gcc --version"
+          vagrant ssh -c "echo 'Fresh VM, hello world! && date && uname -r && gcc --version"
       - name: Checkout kernel source
         run: |
           cd ..
@@ -46,9 +45,6 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
-          pwd
-          #vagrant ssh -c "cp /boot/config-`uname -r`* host/linux/.config && \
-          #  cd host/linux && yes '' | make localmodconfig -j20 && ./config.sh"
           vagrant ssh -c "cd host/linux && ./config.sh"
       - name: Build kernel
         run: |
