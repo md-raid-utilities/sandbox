@@ -21,7 +21,7 @@ jobs:
           echo "***************************"
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo systemctl restart chronyd && sudo chronyc -a makestep"
-          vagrant ssh -c "echo 'Fresh VM, hello world! && date && uname -r && gcc --version"
+          vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
       - name: Checkout kernel source
         run: |
           cd ..
