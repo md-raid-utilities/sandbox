@@ -21,7 +21,17 @@ jobs:
           echo "Restoring clean VM image..."
           echo "***************************"
           ls run*
-          vagrant snapshot restore clean_vm_v1
+          MAX_RETRIES=3
+          RETRY_DELAY=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            vagrant ssh -c "vagrant snapshot restore clean_vm_v1"
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $RETRY_DELAY
+          done
+          #vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
             sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
           vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
