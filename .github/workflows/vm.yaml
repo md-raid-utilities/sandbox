@@ -46,8 +46,7 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
-          vagrant ssh -c "cd host/linux && ./config.sh &> /dev/null"
-          sleep 5
+          vagrant ssh -c "cd host/linux && ./config.sh"
       - name: Build kernel
         run: |
           cd ../linux
