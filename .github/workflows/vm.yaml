@@ -91,8 +91,8 @@ jobs:
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          make bzImage -j16
-          make modules -j16
+          make bzImage -j20
+          make modules -j20
       - name: Install kernel
         run: |
           cd ..
