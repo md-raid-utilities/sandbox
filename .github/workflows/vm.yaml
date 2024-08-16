@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur7
+    runs-on: inspur6-all
     steps:
       - uses: actions/checkout@v4
       - name: VM startup and check
