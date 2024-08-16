@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6-2
+    runs-on: inspur7
     steps:
       - uses: actions/checkout@v4
       - name: VM startup and check
@@ -22,7 +22,7 @@ jobs:
           echo "***************************"
           vagrant snapshot restore clean_vm_v1
           vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
-            sudo systemctl restart chronyd && sudo chronyc -a makestep"
+            sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
           vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
       - name: Checkout kernel source
         run: |
@@ -31,7 +31,7 @@ jobs:
           echo "Preparing Linux repo..."
           echo "***********************"
           sudo timedatectl set-timezone UTC
-          sudo systemctl restart chronyd && sudo chronyc -a makestep
+          sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1
           mkdir -p linux
           cd linux
           git init
