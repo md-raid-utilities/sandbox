@@ -10,7 +10,7 @@ on:
 
 jobs:
   per-patch-testing:
-    runs-on: inspur6
+    runs-on: inspur6-2
     steps:
       - uses: actions/checkout@v4
       - name: VM startup and check
@@ -46,15 +46,15 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
-          vagrant ssh -c "cd host/linux && ./config.sh > config.out && cat config.out"
+          vagrant ssh -c "cd host/linux && ./config.sh"
+          cd linux
+          truncate -s +0 ./.config
       - name: Build kernel
         run: |
           cd ../linux
           echo "******************************"
           echo "Compile Linux on bare metal..."
           echo "******************************"
-          cat .config
-          sleep 1
           make bzImage -j32
           make modules -j32
       - name: Install kernel
