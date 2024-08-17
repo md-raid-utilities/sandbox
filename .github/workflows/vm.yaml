@@ -26,7 +26,14 @@ jobs:
           echo "***************************"
           whoami
           ls run*
-          vagrant snapshot restore clean_vm_v1
+          for i in $(seq 1 $MAX_VAG_RETRIES); do
+            vagrant snapshot restore clean_vm_v1
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant snapshot restore failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $VAG_RETRY_DELAY
+          done
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
               sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
@@ -117,8 +124,14 @@ jobs:
           echo "***************"
           echo "Rebooting VM..."
           echo "****************"
-          echo "Reboot the VM..."
-          vagrant reload
+          for i in $(seq 1 $MAX_VAG_RETRIES); do
+            vagrant reload
+            if [ $? -eq 0 ]; then
+              break
+            fi
+            echo "Vagrant reboot FAILED. Retrying in $RETRY_DELAY seconds..."
+            sleep $VAG_RETRY_DELAY
+          done
       - name: VM version check
         run: |
           cd ..
