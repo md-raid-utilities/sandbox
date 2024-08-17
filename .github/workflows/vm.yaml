@@ -9,9 +9,8 @@ on:
     branches: [ "main" ]
 
 env:
-    # these are for vagrant ssh commands
     MAX_VAG_RETRIES: "3"
-    VAG_RETRY_DELAY: '5"
+    VAG_RETRY_DELAY: "5"
     
 jobs:
   per-patch-testing:
