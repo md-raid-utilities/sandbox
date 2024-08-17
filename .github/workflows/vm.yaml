@@ -111,11 +111,15 @@ jobs:
             echo "Vagrant SSH command grubby. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
+      - name: Reboot VM
+        run: |
+          cd ..
+          echo "***************"
+          echo "Rebooting VM..."
+          echo "****************"
           echo "Shut down the VM, bring it back up..."
-          vagrant halt
-          sleep 5
-          vagrant up
-          sleep 5
+          vagrant reload
+          sleep 10
       - name: VM version check
         run: |
           cd ..
