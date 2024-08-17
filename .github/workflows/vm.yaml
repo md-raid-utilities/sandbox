@@ -14,7 +14,7 @@ env:
     
 jobs:
   per-patch-testing:
-    runs-on: inspur7-all #self-hosted
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - name: VM startup and check
@@ -34,22 +34,17 @@ jobs:
             if [ $? -eq 0 ]; then
               break
             fi
-            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            echo "Vagrant SSH command UTC set. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
-          #vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
-          #  sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
-          MAX_RETRIES=3
-          RETRY_DELAY=5
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
             if [ $? -eq 0 ]; then
               break
             fi
-            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
+            echo "Vagrant SSH command date. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
-          #vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
       - name: Checkout kernel source
         run: |
           cd ..
@@ -76,17 +71,14 @@ jobs:
           echo "Prepare minimal kernel config..."
           echo "********************************"
           # Just testing this rety mechanism...
-          MAX_RETRIES=3
-          RETRY_DELAY=5
-          for i in $(seq 1 $MAX_RETRIES); do
+          for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && ./config.sh"
             if [ $? -eq 0 ]; then
               break
             fi
-            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
-            sleep $RETRY_DELAY
+            echo "Vagrant SSH command config.sh. Retrying in $RETRY_DELAY seconds..."
+            sleep $VAG_RETRY_DELAY
           done
-          #vagrant ssh -c "cd host/linux && ./config.sh"
       - name: Build kernel
         run: |
           cd ../linux
@@ -101,54 +93,43 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
-          MAX_RETRIES=3
-          RETRY_DELAY=5
-          for i in $(seq 1 $MAX_RETRIES); do
+          for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
               sudo make install -j20"
             if [ $? -eq 0 ]; then
               break
             fi
-            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
-            sleep $RETRY_DELAY
+            echo "Vagrant SSH command install. Retrying in $RETRY_DELAY seconds..."
+            sleep $VAG_RETRY_DELAY
           done
-          #vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
-          #  sudo make install -j20"
           # our VM clean image only has one index (0) so 1 is always correct
-          MAX_RETRIES=3
-          RETRY_DELAY=5
-          for i in $(seq 1 $MAX_RETRIES); do
+          for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
             if [ $? -eq 0 ]; then
               break
             fi
-            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
-            sleep $RETRY_DELAY
+            echo "Vagrant SSH command grubby. Retrying in $RETRY_DELAY seconds..."
+            sleep $VAG_RETRY_DELAY
           done
           echo "Shut down the VM, bring it back up..."
           vagrant halt
           sleep 5
           vagrant up
           sleep 5
-          #vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
       - name: VM version check
         run: |
           cd ..
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
           echo "***************************************"
-          MAX_RETRIES=3
-          RETRY_DELAY=5
-          for i in $(seq 1 $MAX_RETRIES); do
+          for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
             if [ $? -eq 0 ]; then
               break
             fi
-            echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
-            sleep $RETRY_DELAY
+            echo "Vagrant SSH reboot/uname failed. Retrying in $RETRY_DELAY seconds..."
+            sleep $VAG_RETRY_DELAY
           done
-          #vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
-          #vagrant ssh -c 'uname -r'
       - name: Execute tests
         run: |
           cd ..
