@@ -130,6 +130,7 @@ jobs:
           #vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
       - name: VM reboot and version check
         run: |
+          cd ..
           vagrant up
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
@@ -148,6 +149,7 @@ jobs:
           #vagrant ssh -c 'uname -r'
       - name: Execute tests
         run: |
+          cd ..
           echo "Under construction..."
       - name: All done, cleanup
         run: |          
