@@ -19,13 +19,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: VM startup and check
         run: |
-          echo "WHOMAI"
-          whoami
           cd ..
           rm -rf linux
           echo "***************************"
           echo "Restoring clean VM image..."
           echo "***************************"
+          whoami
           ls run*
           vagrant snapshot restore clean_vm_v1
           for i in $(seq 1 $MAX_VAG_RETRIES); do
@@ -104,7 +103,8 @@ jobs:
           done
           # our VM clean image only has one index (0) so 1 is always correct
           for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
+            vagrant ssh -c "sudo grubby --set-default-index=1 && \
+              sudo grubby --info ALL && exit"
             if [ $? -eq 0 ]; then
               break
             fi
@@ -117,9 +117,8 @@ jobs:
           echo "***************"
           echo "Rebooting VM..."
           echo "****************"
-          echo "Shut down the VM, bring it back up..."
+          echo "Reboot the VM..."
           vagrant reload
-          sleep 10
       - name: VM version check
         run: |
           cd ..
