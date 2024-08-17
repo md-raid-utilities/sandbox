@@ -126,13 +126,14 @@ jobs:
             echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
             sleep $RETRY_DELAY
           done
+          vagrant reload
+          sleep 5
           #vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
       - name: VM reboot and version check
         run: |
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
           echo "***************************************"
-          vagrant reload
           MAX_RETRIES=3
           RETRY_DELAY=5
           for i in $(seq 1 $MAX_RETRIES); do
