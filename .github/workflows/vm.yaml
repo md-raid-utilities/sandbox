@@ -101,7 +101,6 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
-          vagrant up
           MAX_RETRIES=3
           RETRY_DELAY=5
           for i in $(seq 1 $MAX_RETRIES); do
@@ -126,11 +125,12 @@ jobs:
             echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
             sleep $RETRY_DELAY
           done
-          vagrant reload
+          vagrant halt
           sleep 5
           #vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
       - name: VM reboot and version check
         run: |
+          vagrant up
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
           echo "***************************************"
@@ -153,6 +153,7 @@ jobs:
         run: |          
           cd ..
           echo "Cleaning up..."
+          vagrant halt
           # TODO: add testing cleanup
           vagrant halt
           rm -rf linux
