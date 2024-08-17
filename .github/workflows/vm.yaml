@@ -125,13 +125,15 @@ jobs:
             echo "Vagrant SSH command failed. Retrying in $RETRY_DELAY seconds..."
             sleep $RETRY_DELAY
           done
+          echo "Shut down the VM, bring it back up..."
           vagrant halt
           sleep 5
+          vagrant up
+          sleep 5
           #vagrant ssh -c "sudo grubby --set-default-index=1 && sudo grubby --info ALL"
-      - name: VM reboot and version check
+      - name: VM version check
         run: |
           cd ..
-          vagrant up
           echo "***************************************"
           echo 'Reboot done, fire up VM and check uname'
           echo "***************************************"
