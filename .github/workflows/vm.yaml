@@ -24,6 +24,7 @@ jobs:
           echo "***************************"
           echo "Restoring clean VM image..."
           echo "***************************"
+          echo "Let's check the current user and which runner is execiting:"
           whoami
           ls run*
           for i in $(seq 1 $MAX_VAG_RETRIES); do
