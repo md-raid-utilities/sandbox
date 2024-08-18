@@ -124,14 +124,8 @@ jobs:
           echo "***************"
           echo "Rebooting VM..."
           echo "****************"
-          for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant reload
-            if [ $? -eq 0 ]; then
-              break
-            fi
-            echo "Vagrant reboot FAILED. Retrying in $RETRY_DELAY seconds..."
-            sleep $VAG_RETRY_DELAY
-          done
+          vagrant halt
+          vagrant up
       - name: VM version check
         run: |
           cd ..
