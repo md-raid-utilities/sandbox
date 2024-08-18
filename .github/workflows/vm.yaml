@@ -129,12 +129,14 @@ jobs:
           vagrant snapshot save tmp --force
           echo "Fire it up..."
           vagrant snapshot restore tmp
+          sleep 10
       - name: VM version check
         run: |
           cd ..
           echo "*********************************"
           echo 'Reboot done, check kernel version'
           echo "*********************************"
+          vagrant status
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
             if [ $? -eq 0 ]; then
