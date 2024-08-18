@@ -141,7 +141,8 @@ jobs:
           vagrant up
           echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
-          vagrant status          
+          vagrant status
+        continue-on-error: true
       - name: VM version check
         run: |
           cd ..
