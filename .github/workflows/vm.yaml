@@ -119,9 +119,12 @@ jobs:
           echo "***************"
           echo "Rebooting VM..."
           echo "***************"
-          vagrant reload
+          vagrant halt
           sleep 3
           vagrant status
+          vagrant up
+          sleep 3
+          vagrant status          
       - name: VM version check
         run: |
           cd ..
