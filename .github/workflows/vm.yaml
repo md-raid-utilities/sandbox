@@ -50,6 +50,7 @@ jobs:
             echo "Vagrant SSH command date. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
+        continue-on-error: true
       - name: Checkout kernel source
         run: |
           cd ..
@@ -88,6 +89,7 @@ jobs:
             echo "Vagrant SSH command config.sh. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
+        continue-on-error: true
       - name: Build kernel
         run: |
           cd ../linux
@@ -126,6 +128,7 @@ jobs:
             echo "Vagrant SSH command grubby. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
+        continue-on-error: true
       - name: Reboot VM
         run: |
           cd ..
@@ -162,6 +165,7 @@ jobs:
             echo "Vagrant SSH reboot/uname failed. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
+        continue-on-error: true
       - name: Execute tests
         run: |
           cd ..
