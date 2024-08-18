@@ -27,7 +27,12 @@ jobs:
           whoami
           ls run*
           vagrant snapshot restore clean_vm_v1
-          sleep 3
+          echo "vagrant restore command finished with exit code: $?"
+          sleep 2
+          # temp workaround for some strange behavior under heavy load
+          vagrant status
+          vagrant up
+          sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
               sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
