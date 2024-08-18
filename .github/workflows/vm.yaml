@@ -92,6 +92,8 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
+          vagrant status
+          sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
               sudo make install -j20"
