@@ -126,8 +126,9 @@ jobs:
           echo "****************"
           echo "Shut it down..."
           vagrant halt
+          vagrant snapshot save tmp --force
           echo "Fire it up..."
-          vagrant up
+          vagrant snapshot restore tmp
       - name: VM version check
         run: |
           cd ..
