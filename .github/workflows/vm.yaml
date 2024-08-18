@@ -27,7 +27,7 @@ jobs:
           whoami
           ls run*
           vagrant snapshot restore clean_vm_v1
-          echo "vagrant restore command finished with exit code: $?"
+          echo "FYI vagrant restore command finished with exit code: $?"
           sleep 2
           # temp workaround for some strange behavior under heavy load
           vagrant status
@@ -78,6 +78,7 @@ jobs:
           # temp workaround for some strange behavior under heavy load
           vagrant status
           vagrant up
+          echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && ./config.sh"
@@ -104,6 +105,7 @@ jobs:
           # temp workaround for some strange behavior under heavy load
           vagrant status
           vagrant up
+          echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
@@ -132,16 +134,14 @@ jobs:
           echo "***************"
           vagrant status
           vagrant halt
-          echo "vagrant halt command finished with exit code: $?"
+          echo "FYI vagrant halt command finished with exit code: $?"
           sleep 2
           vagrant status
-          echo "vagrant status command finished with exit code: $?"
           sleep 2
           vagrant up
-          echo "vagrant up command finished with exit code: $?"
+          echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
           vagrant status          
-          echo "vagrant status2 command finished with exit code: $?"
       - name: VM version check
         run: |
           cd ..
@@ -151,6 +151,7 @@ jobs:
           # temp workaround for some strange behavior under heavy load
           vagrant status
           vagrant up
+          echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
@@ -170,4 +171,5 @@ jobs:
           echo "Cleaning up..."
           # TODO: add testing cleanup
           vagrant halt
+          echo "FYI vagrant halt command finished with exit code: $?"
           rm -rf linux
