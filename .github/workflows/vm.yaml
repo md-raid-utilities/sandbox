@@ -70,6 +70,10 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
+          # temp workaround for some strange behavior under heavy load
+          vagrant status
+          vagrant up
+          sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && ./config.sh"
             if [ $? -eq 0 ]; then
@@ -92,11 +96,9 @@ jobs:
           echo "***********************"
           echo "Install kernel in VM..."
           echo "***********************"
+          # temp workaround for some strange behavior under heavy load
           vagrant status
-          sleep 2
           vagrant up
-          sleep 2
-          vagrant status
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
@@ -123,6 +125,7 @@ jobs:
           echo "***************"
           echo "Rebooting VM..."
           echo "***************"
+          vagrant status
           vagrant halt
           echo "vagrant halt command finished with exit code: $?"
           sleep 2
@@ -140,6 +143,10 @@ jobs:
           echo "*********************************"
           echo 'Reboot done, check kernel version'
           echo "*********************************"
+          # temp workaround for some strange behavior under heavy load
+          vagrant status
+          vagrant up
+          sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
             if [ $? -eq 0 ]; then
