@@ -118,11 +118,16 @@ jobs:
           echo "Rebooting VM..."
           echo "***************"
           vagrant halt
-          sleep 3
+          echo "vagrant halt command finished with exit code: $?"
+          sleep 2
           vagrant status
+          echo "vagrant status command finished with exit code: $?"
+          sleep 2
           vagrant up
-          sleep 3
+          echo "vagrant up command finished with exit code: $?"
+          sleep 2
           vagrant status          
+          echo "vagrant status2 command finished with exit code: $?"
       - name: VM version check
         run: |
           cd ..
