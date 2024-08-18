@@ -70,7 +70,6 @@ jobs:
           echo "********************************"
           echo "Prepare minimal kernel config..."
           echo "********************************"
-          # Just testing this rety mechanism...
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && ./config.sh"
             if [ $? -eq 0 ]; then
