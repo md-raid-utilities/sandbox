@@ -27,14 +27,7 @@ jobs:
           echo "Let's check the current user and which runner is execiting:"
           whoami
           ls run*
-          for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant snapshot restore clean_vm_v1
-            if [ $? -eq 0 ]; then
-              break
-            fi
-            echo "Vagrant snapshot restore failed. Retrying in $RETRY_DELAY seconds..."
-            sleep $VAG_RETRY_DELAY
-          done
+          vagrant snapshot restore clean_vm_v1
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
               sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
