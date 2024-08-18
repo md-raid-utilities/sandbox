@@ -28,6 +28,7 @@ jobs:
           whoami
           ls run*
           vagrant snapshot restore clean_vm_v1
+          sleep 3
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
               sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
@@ -143,7 +144,6 @@ jobs:
         run: |          
           cd ..
           echo "Cleaning up..."
-          vagrant halt
           # TODO: add testing cleanup
           vagrant halt
           rm -rf linux
