@@ -1,7 +1,7 @@
 .name: VM-sandbox-test
 # tested with v1 vagrant snapshot 
 # TODO: create a working_dir var and start there every time, the relative paths
-# used throughout here are hard to keep track of and not easy to maintain.
+# used throughout here are hard to keep track of and not easy to maintain
 on:
   pull_request:
   push:
