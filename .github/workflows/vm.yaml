@@ -35,6 +35,7 @@ jobs:
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
               sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
+            echo "FYI vagrant time command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
             fi
@@ -43,6 +44,7 @@ jobs:
           done
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
+            echo "FYI vagrant fresh command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
             fi
@@ -82,6 +84,7 @@ jobs:
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && ./config.sh"
+            echo "FYI vagrant config command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
             fi
@@ -111,6 +114,7 @@ jobs:
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
               sudo make install -j20"
+            echo "FYI vagrant make command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
             fi
@@ -121,6 +125,7 @@ jobs:
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "sudo grubby --set-default-index=1 && \
               sudo grubby --info ALL && exit"
+            echo "FYI vagrant grubby command finished with exit code: $?"   
             if [ $? -eq 0 ]; then
               break
             fi
@@ -158,6 +163,7 @@ jobs:
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
+            echo "FYI vagrant reboot done command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
             fi
