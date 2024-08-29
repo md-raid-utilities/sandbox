@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: VM startup from snapshot
         run: |
+          echo "Current working directory: ${{ github.workspace }}"
           cd ..
           rm -rf linux
           echo "***************************"
