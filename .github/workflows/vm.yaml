@@ -1,5 +1,5 @@
 name: VM-sandbox-test
-# tested with v1 vagrant snapshot.
+# tested with v1 vagrant snapshot..
 
 on:
   pull_request:
