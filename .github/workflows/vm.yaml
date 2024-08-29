@@ -63,6 +63,7 @@ jobs:
           mkdir -p linux
           cd linux
           git init
+          git config --global --add safe.directory '*'
           git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
           # just a random hash for quick repo population, get this from PR
           echo "Fetching code..."
