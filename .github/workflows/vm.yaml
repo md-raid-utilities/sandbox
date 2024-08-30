@@ -53,13 +53,12 @@ jobs:
             sleep $VAG_RETRY_DELAY
           done
         continue-on-error: true
-      - name: Version Save B
+      - name: Save Initial Kernel Version
         run: |
           echo "::set-output name=vagrant_output::$(vagrant ssh -c 'uname -r')"
-          echo "The output of the Vagrant command was: ${{ steps.run-vagrant-command.outputs.vagrant_output }}"
-          exit 0
       - name: Checkout kernel source
         run: |
+          echo "The random number is: ${{ github.output.vagrant_output }}"
           cd ..
           echo "***********************"
           echo "Preparing Linux repo..."
