@@ -55,8 +55,9 @@ jobs:
         continue-on-error: true
       - name: Version Save B
         run: |
-          echo "::set-output name=vagrant_output::$(vagrant ssh -c 'uname -r')
+          echo "::set-output name=vagrant_output::$(vagrant ssh -c 'uname -r')"
           echo "The output of the Vagrant command was: ${{ steps.run-vagrant-command.outputs.vagrant_output }}"
+          exit 0
       - name: Checkout kernel source
         run: |
           cd ..
