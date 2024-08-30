@@ -60,7 +60,7 @@ jobs:
       - name: Checkout kernel source
         run: |
           echo "ASSSS"
-          echo {{steps.kver1.outputs.kver}}
+          echo "${{steps.kver1.outputs.kver}}"
           echo "XXXXX"
           cd ..
           echo "***********************"
