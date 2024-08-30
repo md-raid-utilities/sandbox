@@ -9,6 +9,7 @@ on:
 env:
     MAX_VAG_RETRIES: "3"
     VAG_RETRY_DELAY: "5"
+    INIT_KERNEL_VER: ""
     
 jobs:
   per-patch-testing:
@@ -58,7 +59,7 @@ jobs:
           vagrant ssh -c "uname -r"
       - name: Version Save B
         run: |
-          INIT_KERNEL_VER: "${{ steps.run-vagrant-command.outputs.result }}"
+          $INIT_KERNEL_VER = "${{ steps.run-vagrant-command.outputs.result }}"
           echo "here it is----> ${{ INIT_KERNEL_VER }}"
       - name: Checkout kernel source
         run: |
