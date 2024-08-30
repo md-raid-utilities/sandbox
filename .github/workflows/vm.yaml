@@ -58,7 +58,7 @@ jobs:
           vagrant ssh -c "uname -r"
       - name: Version Save B
         run: |
-          INIT_KERNEL_VER = "${{ steps.run-vagrant-command.outputs.result }}"
+          INIT_KERNEL_VER: "${{ steps.run-vagrant-command.outputs.result }}"
           echo "here it is----> ${{ INIT_KERNEL_VER }}"
       - name: Checkout kernel source
         run: |
