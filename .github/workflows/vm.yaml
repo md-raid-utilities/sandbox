@@ -60,7 +60,8 @@ jobs:
       - name: Version Save B
         run: |
           $INIT_KERNEL_VER = "${{ steps.run-vagrant-command.outputs.result }}"
-          echo "here it is----> ${{ INIT_KERNEL_VER }}"
+          echo "here it is:"
+          echo $INIT_KERNEL_VER
       - name: Checkout kernel source
         run: |
           cd ..
