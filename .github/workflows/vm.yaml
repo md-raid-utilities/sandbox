@@ -43,7 +43,7 @@ jobs:
             sleep $VAG_RETRY_DELAY
           done
           for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
+            vagrant ssh -c "echo 'Fresh VM, hello world!' && date && gcc --version"
             vagrant ssh -c "sudo grubby --info ALL"
             echo "FYI vagrant fresh command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
@@ -53,6 +53,13 @@ jobs:
             sleep $VAG_RETRY_DELAY
           done
         continue-on-error: true
+      - name: Version Save A 
+        run: |
+          vagrant ssh -c "uname -r"
+      - name: Version Save B
+        run: |
+          INIT_KERNEL_VER = "${{ steps.run-vagrant-command.outputs.result }}"
+          echo "here it is----> ${{ INIT_KERNEL_VER }}"
       - name: Checkout kernel source
         run: |
           cd ..
