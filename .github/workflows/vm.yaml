@@ -163,9 +163,9 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: VM version check
         run: |
-          echo "${{steps.kver1.outputs.kver}}"
-          echo "${{steps.kver2.outputs.kver}}"
-          if [[ "${{steps.kver1.outputs.kver}}" != "${{steps.kver2.outputs.kver}}" ]]; then
+          echo "was---> ${{steps.kver1.outputs.kver}}"
+          echo "now---> ${{steps.kver2.outputs.kver}}"
+          if [[ "${{steps.kver1.outputs.kver}}" == "${{steps.kver2.outputs.kver}}" ]]; then
             echo "Version check passed!"
           else
             echo "Kernel install failed"
