@@ -163,36 +163,23 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: VM version check
         run: |
-          echo "was---> ${{steps.kver1.outputs.kver}}"
-          echo "now---> ${{steps.kver2.outputs.kver}}"
+          echo "*********************************"
+          echo 'Reboot done, check kernel version'
+          echo "*********************************"
+          echo "before---> ${{steps.kver1.outputs.kver}}"
+          echo "after----> ${{steps.kver2.outputs.kver}}"
           if [[ "${{steps.kver1.outputs.kver}}" == "${{steps.kver2.outputs.kver}}" ]]; then
             echo "Version check passed!"
           else
             echo "Kernel install failed"
-            echo "${{steps.kver1.outputs.kver}}"
-            echo "${{steps.kver2.outputs.kver}}"
             exit 1
           fi
-          cd ..
-          echo "*********************************"
-          echo 'Reboot done, check kernel version'
-          echo "*********************************"
-          # temp workaround for some strange behavior under heavy load
           vagrant status
-          vagrant up
           echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
-          for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
-            vagrant ssh -c "sudo grubby --info ALL"
-            echo "FYI vagrant reboot done command finished with exit code: $?" 
-            if [ $? -eq 0 ]; then
-              break
-            fi
-            echo "Vagrant SSH reboot/uname failed. Retrying in $RETRY_DELAY seconds..."
-            sleep $VAG_RETRY_DELAY
-          done
-        continue-on-error: true
+          vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
+          echo "FYI vagrant reboot done command finished with exit code: $?" 
+        continue-on-error: false
       - name: Execute tests
         run: |
           cd ..
