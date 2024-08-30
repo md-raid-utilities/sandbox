@@ -55,12 +55,18 @@ jobs:
         continue-on-error: true
       - name: Save initial kernel version
         run: |
-          echo "{vagrant_output}={vagrant ssh -c 'uname -r'}" >> "$GITHUB_OUTPUT"
+          echo "{vagrant ssh -c 'uname -r'}" >> "$GITHUB_OUTPUT"
+          echo "0"
           echo $vagrant_output
           echo $GITHUB_OUTPUT
+          echo "1"
       - name: Checkout kernel source
         run: |
-          echo "The random number is: ${{ github.output.vagrant_output }}"
+          echo "A"
+          echo $vagrant_output
+          echo $GITHUB_OUTPUT
+          echo "B"
+          
           cd ..
           echo "***********************"
           echo "Preparing Linux repo..."
