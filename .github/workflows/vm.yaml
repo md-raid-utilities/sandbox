@@ -59,9 +59,6 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: Checkout kernel source
         run: |
-          echo "ASSSS"
-          echo "${{steps.kver1.outputs.kver}}"
-          echo "XXXXX"
           cd ..
           echo "***********************"
           echo "Preparing Linux repo..."
@@ -160,8 +157,22 @@ jobs:
           sleep 2
           vagrant status
         continue-on-error: true
+      - name: Save new kernel version
+        id: kver2
+        run: |
+          echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: VM version check
         run: |
+          echo "${{steps.kver1.outputs.kver}}"
+          echo "${{steps.kver2.outputs.kver}}"
+          if [[ "${{steps.kver1.outputs.kver}}" != "${{steps.kver2.outputs.kver}}" ]]; then
+            echo "Version check passed!"
+          else
+            echo "Kernel install failed"
+            echo "${{steps.kver1.outputs.kver}}"
+            echo "${{steps.kver2.outputs.kver}}"
+            exit 1
+          fi
           cd ..
           echo "*********************************"
           echo 'Reboot done, check kernel version'
