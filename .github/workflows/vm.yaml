@@ -56,7 +56,7 @@ jobs:
       - name: Save initial kernel version
         id: kver1
         run: |
-          echo "kver={vagrant ssh -c 'uname -r'}" >> "$GITHUB_OUTPUT"
+          echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: Checkout kernel source
         run: |
           echo "ASSSS"
