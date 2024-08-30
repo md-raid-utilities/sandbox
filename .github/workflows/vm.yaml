@@ -168,7 +168,7 @@ jobs:
           echo "*********************************"
           echo "before---> ${{steps.kver1.outputs.kver}}"
           echo "after----> ${{steps.kver2.outputs.kver}}"
-          if [[ "${{steps.kver1.outputs.kver}}" == "${{steps.kver2.outputs.kver}}" ]]; then
+          if [[ "${{steps.kver1.outputs.kver}}" != "${{steps.kver2.outputs.kver}}" ]]; then
             echo "Version check passed!"
           else
             echo "Kernel install failed"
