@@ -1,10 +1,8 @@
-name: VM-sandbox-test
-# tested with v1 vagrant snapshot..
+name: mdci-per-patch
+# tested with v1 vagrant snapshot...
 
 on:
   pull_request:
-  push:
-    branches: [ "main" ]
 
 env:
     MAX_VAG_RETRIES: "3"
@@ -33,7 +31,7 @@ jobs:
           vagrant up
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "sudo sudo timedatectl set-timezone UTC && \
+            vagrant ssh -c "sudo timedatectl set-timezone UTC && \
               sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
             echo "FYI vagrant time command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
@@ -44,6 +42,7 @@ jobs:
           done
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Fresh VM, hello world!' && date && uname -r && gcc --version"
+            vagrant ssh -c "sudo grubby --info ALL"
             echo "FYI vagrant fresh command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
@@ -64,12 +63,13 @@ jobs:
           cd linux
           git init
           git config --global --add safe.directory '*'
-          git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
-          # just a random hash for quick repo population, get this from PR
+          git remote add origin https://github.com/${{ github.repository }}
           echo "Fetching code..."
           git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
           echo "Fetch Done, resetting..."
           git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
+          #git fetch origin --depth=5 ${{ github.event.pull_request.head.sha }}
+          #git reset --hard ${{ github.event.pull_request.head.sha }}
           echo "Ready to configure..."
       - name: Configure kernel
         run: |
@@ -113,6 +113,7 @@ jobs:
           echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
+            vagrant ssh -c "sudo grubby --remove-kernel=0" 
             vagrant ssh -c "cd host/linux && sudo make modules_install -j20 && \
               sudo make install -j20"
             echo "FYI vagrant make command finished with exit code: $?" 
@@ -124,8 +125,7 @@ jobs:
           done
           # our VM clean image only has one index (0) so 1 is always correct
           for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "sudo grubby --set-default-index=1 && \
-              sudo grubby --info ALL && exit"
+            vagrant ssh -c "sudo grubby --info ALL && exit"
             echo "FYI vagrant grubby command finished with exit code: $?"   
             if [ $? -eq 0 ]; then
               break
@@ -164,6 +164,7 @@ jobs:
           sleep 2
           for i in $(seq 1 $MAX_VAG_RETRIES); do
             vagrant ssh -c "echo 'Reboot done, hello world!' && uname -r"
+            vagrant ssh -c "sudo grubby --info ALL"
             echo "FYI vagrant reboot done command finished with exit code: $?" 
             if [ $? -eq 0 ]; then
               break
