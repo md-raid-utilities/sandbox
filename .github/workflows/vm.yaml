@@ -1,8 +1,10 @@
-name: mdci-per-patch
+name: sandbox-per-patch
 # tested with v1 vagrant snapshot...
 
 on:
   pull_request:
+   push:
+    branches: [ "main" ]
 
 env:
     MAX_VAG_RETRIES: "3"
