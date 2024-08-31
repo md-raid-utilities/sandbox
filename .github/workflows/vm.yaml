@@ -60,10 +60,12 @@ jobs:
       - name: Check the repo
         run: |
           ls -al
-          cd ..
-          ls -al
-          echo "XXXXXXXXX"
-          exit 0
+          git branch
+          cp ../config.sh .
+          vagrant ssh -c "ls -al && ./config.sh"
+          
+          exit 1
+        continue-on-error: true   
       - name: Checkout kernel source
         run: |
           cd ..
