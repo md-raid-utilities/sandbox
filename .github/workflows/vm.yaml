@@ -57,11 +57,13 @@ jobs:
         continue-on-error: true
       - name: Update VM to latest base
         uses: actions/checkout@v4
-      - name: Check the repo
+      - name: Checkout the repo
         run: |
           ls -al
           git branch
           cp ../config.sh .
+          cd ..
+          vagrant status
           vagrant ssh -c "ls -al && ./config.sh"
           
           exit 1
