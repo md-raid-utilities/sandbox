@@ -57,6 +57,7 @@ jobs:
         continue-on-error: true
       - name: Update VM to latest base
         uses: actions/checkout@v4
+      - name: Check the repo
         run: |
           ls -al
           cd ..
