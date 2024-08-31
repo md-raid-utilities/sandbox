@@ -15,6 +15,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: VM startup from snapshot
+        id: kver1
         run: |
           echo "Current working directory: ${{ github.workspace }}"
           cd ..
@@ -52,11 +53,12 @@ jobs:
             echo "Vagrant SSH command date. Retrying in $RETRY_DELAY seconds..."
             sleep $VAG_RETRY_DELAY
           done
-        continue-on-error: true
-      - name: Save initial kernel version
-        id: kver1
-        run: |
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
+        continue-on-error: true
+      #- name: Save initial kernel version
+      #  id: kver1
+      #  run: |
+      #    echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: Checkout kernel source
         run: |
           cd ..
@@ -141,6 +143,7 @@ jobs:
           done
         continue-on-error: true
       - name: Reboot VM
+        id: kver2
         run: |
           cd ..
           echo "***************"
@@ -156,11 +159,12 @@ jobs:
           echo "FYI vagrant up command finished with exit code: $?"
           sleep 2
           vagrant status
-        continue-on-error: true
-      - name: Save new kernel version
-        id: kver2
-        run: |
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
+        continue-on-error: true
+      #- name: Save new kernel version
+      #  id: kver2
+      #  run: |
+      #    echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: VM version check
         run: |
           echo "*********************************"
