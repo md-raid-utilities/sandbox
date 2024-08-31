@@ -26,7 +26,7 @@ jobs:
           echo "Let's check the current user and which runner is execiting:"
           whoami
           ls run*
-          vagrant snapshot restore clean_vm_v2
+          vagrant snapshot restore clean_vm_v1
           echo "FYI vagrant restore command finished with exit code: $?"
           sleep 2
           # temp workaround for some strange behavior under heavy load
