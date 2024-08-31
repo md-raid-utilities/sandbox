@@ -55,6 +55,14 @@ jobs:
           done
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
         continue-on-error: true
+      - name: Update VM to latest base
+        uses: actions/checkout@v4
+        run: |
+          ls -al
+          cd ..
+          ls -al
+          echo "XXXXXXXXX"
+          exit 0
       - name: Checkout kernel source
         run: |
           cd ..
