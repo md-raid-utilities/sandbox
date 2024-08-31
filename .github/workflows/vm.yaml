@@ -55,10 +55,6 @@ jobs:
           done
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
         continue-on-error: true
-      #- name: Save initial kernel version
-      #  id: kver1
-      #  run: |
-      #    echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: Checkout kernel source
         run: |
           cd ..
@@ -161,10 +157,6 @@ jobs:
           vagrant status
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
         continue-on-error: true
-      #- name: Save new kernel version
-      #  id: kver2
-      #  run: |
-      #    echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
       - name: VM version check
         run: |
           echo "*********************************"
