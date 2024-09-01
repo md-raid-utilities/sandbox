@@ -55,12 +55,14 @@ jobs:
             sleep $VAG_RETRY_DELAY
           done
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
+          ls -al
         continue-on-error: true
+      - uses: actions/checkout@v4
+        with:
+          depth: 1
       - name: Checkout kernel source
-      #- uses: actions/checkout@v4
-      #  with:
-      #    depth: 1
         run: |
+          la -al
           cd ..
           echo "***********************"
           echo "Preparing Linux repo..."
