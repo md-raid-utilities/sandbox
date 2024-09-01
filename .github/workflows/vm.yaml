@@ -18,7 +18,7 @@ jobs:
       - name: VM startup from snapshot
         id: kver1
         run: |
-          echo "Current working directory: ${{ $HOME_DIR }}"
+          echo "Current working directory: $HOME_DIR"
           cd ..
           rm -rf linux
           echo "***************************"
