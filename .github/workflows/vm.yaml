@@ -57,9 +57,9 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
         continue-on-error: true
       - name: Checkout kernel source
-      - uses: actions/checkout@v4
-        with:
-          depth: 1
+      #- uses: actions/checkout@v4
+      #  with:
+      #    depth: 1
         run: |
           cd ..
           echo "***********************"
