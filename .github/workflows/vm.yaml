@@ -10,6 +10,7 @@ env:
     MAX_VAG_RETRIES: "3"
     VAG_RETRY_DELAY: "5"
     HOME_DIR: ${{ github.workspace }}"
+    REPO_NAME: ${{ github.repository_name }}
     
 jobs:
   per-patch-testing:
@@ -57,8 +58,7 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
           pwd
           ls -al
-          cd $HOME_DIR
-          ls -al
+          ls -al $REPO_NAME
         continue-on-error: true
       - uses: actions/checkout@v4
         with:
@@ -67,7 +67,7 @@ jobs:
         run: |
           pwd
           ls -al
-          ls -al $HOME_DIR
+          ls -al $REPO_NAME
           cd ..
           echo "***********************"
           echo "Preparing Linux repo..."
