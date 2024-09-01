@@ -9,6 +9,7 @@ on:
 env:
     MAX_VAG_RETRIES: "3"
     VAG_RETRY_DELAY: "5"
+    HOME_DIR: ${{ github.workspace }}"
     
 jobs:
   per-patch-testing:
@@ -17,7 +18,7 @@ jobs:
       - name: VM startup from snapshot
         id: kver1
         run: |
-          echo "Current working directory: ${{ github.workspace }}"
+          echo "Current working directory: ${{ $HOME_DIR }}"
           cd ..
           rm -rf linux
           echo "***************************"
@@ -56,6 +57,9 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
         continue-on-error: true
       - name: Checkout kernel source
+      - uses: actions/checkout@v4
+        with:
+          depth: 1
         run: |
           cd ..
           echo "***********************"
