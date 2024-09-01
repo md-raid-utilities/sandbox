@@ -57,7 +57,8 @@ jobs:
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
           pwd
           ls -al
-          ls -al $HOME_DIR
+          cd $HOME_DIR
+          ls -al
         continue-on-error: true
       - uses: actions/checkout@v4
         with:
