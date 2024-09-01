@@ -55,6 +55,8 @@ jobs:
             sleep $VAG_RETRY_DELAY
           done
           echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
+          pwd
+          ls -al
           ls -al $HOME_DIR
         continue-on-error: true
       - uses: actions/checkout@v4
@@ -62,6 +64,8 @@ jobs:
           fetch-depth: 1
       - name: Checkout kernel source
         run: |
+          pwd
+          ls -al
           ls -al $HOME_DIR
           cd ..
           echo "***********************"
