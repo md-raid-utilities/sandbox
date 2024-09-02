@@ -32,7 +32,7 @@ jobs:
           # Server port, default 25:
           server_port: 465
           # Optional whether this connection use TLS (default is true if server_port is 465)
-          secure: true
+          #secure: true
           # Optional (recommended) mail server username:
           username: ${{secrets.MAIL_USERNAME}}
           # Optional (recommended) mail server password:
@@ -56,14 +56,14 @@ jobs:
           # Optional Message ID this message is replying to:
           in_reply_to: <random-luke@example.com>
           # Optional unsigned/invalid certificates allowance:
-          ignore_cert: true
+          #ignore_cert: true
           # Optional converting Markdown to HTML (set content_type to text/html too):
-          convert_markdown: true
+          #convert_markdown: true
           # Optional attachments:
           attachments: attachments.zip,git.diff,./dist/static/*.js
           # Optional priority: 'high', 'normal' (default) or 'low'
           priority: low
           # Optional nodemailerlog: true/false
-          nodemailerlog: false
+          #nodemailerlog: false
           # Optional nodemailerdebug: true/false if true lognodem will also be set true
-          nodemailerdebug: false
+          #nodemailerdebug: false
