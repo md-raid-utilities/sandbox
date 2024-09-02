@@ -29,6 +29,11 @@ jobs:
           echo "This is some output:"
           echo ${{ steps.test1.outputs.stdout }} 
           echo "End"
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: ./dist
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
