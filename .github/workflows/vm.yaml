@@ -16,13 +16,14 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
-      - name: Do nothing
-        run: |
-          pwd
-          ls -al
-          echo "Under construction..."
-      - uses: actions/send-mail@v3
+      - name: ✨ Send email, you star
+        uses: dawidd6/action-send-mail@v1.3.0
         with:
-          to: paul.e.luse@intel.com
-          subject: Workflow Completed
-          body: The workflow has successfully completed.
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: quadmx08
+          password: ${{ secrets.GMAIL_PASS }}
+          subject: Your a star ✨
+          body: ${{ github.actor }} just starred your mail-on-star repo!!! ${{ github.repository }}
+          to: ${{ secrets.GMAIL_ADDRESS }}
+          from: ${{ secrets.GMAIL_ADDRESS }}
