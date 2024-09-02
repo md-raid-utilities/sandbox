@@ -11,11 +11,17 @@ env:
     VAG_RETRY_DELAY: "5"
     HOME_DIR: ${{ github.workspace }}"
     REPO_NAME: ${{ github.repository_name }}
-    
+      
 jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
+      - uses: actions/checkout@v3
+      - name: Build the project
+        run: |
+          make
+          echo "This is some output:"
+          echo  $GITHUB_OUTPUT
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
