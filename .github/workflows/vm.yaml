@@ -21,7 +21,8 @@ jobs:
         run: |
           pwd
           ls -al
-          gcc -o hello.c
+          gcc hello.c
+          ./a.out
           echo "This is some output:"
           echo  $GITHUB_OUTPUT
       - name: Send mail
