@@ -16,91 +16,13 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
-      - name: VM startup from snapshot
-        id: kver1
+      - name: Do nothing
         run: |
-          echo "Current working directory: $HOME_DIR"
-          cd ..
-          rm -rf linux
-          echo "***************************"
-          echo "Restoring clean VM image..."
-          echo "***************************"
-          echo "Let's check the current user and which runner is execiting:"
-          whoami
-          ls run*
-          vagrant snapshot restore clean_vm_v1
-          echo "FYI vagrant restore command finished with exit code: $?"
-          sleep 2
-          # temp workaround for some strange behavior under heavy load
-          vagrant status
-          vagrant up
-          sleep 2
-          for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "sudo timedatectl set-timezone UTC && \
-              sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1"
-            echo "FYI vagrant time command finished with exit code: $?" 
-            if [ $? -eq 0 ]; then
-              break
-            fi
-            echo "Vagrant SSH command UTC set. Retrying in $RETRY_DELAY seconds..."
-            sleep $VAG_RETRY_DELAY
-          done
-          for i in $(seq 1 $MAX_VAG_RETRIES); do
-            vagrant ssh -c "echo 'Fresh VM, hello world!' && date && gcc --version"
-            vagrant ssh -c "sudo grubby --info ALL"
-            echo "FYI vagrant fresh command finished with exit code: $?" 
-            if [ $? -eq 0 ]; then
-              break
-            fi
-            echo "Vagrant SSH command date. Retrying in $RETRY_DELAY seconds..."
-            sleep $VAG_RETRY_DELAY
-          done
-          echo "kver=$(vagrant ssh -c 'uname -r')" >> "$GITHUB_OUTPUT"
-        continue-on-error: true
-      - name: Checkout kernel source
-        run: |
-          cd ..
-          echo "***********************"
-          echo "Preparing Linux repo..."
-          echo "***********************"
-          sudo timedatectl set-timezone UTC
-          sudo systemctl restart chronyd && sudo chronyc -a makestep && sleep 1
-          #mkdir -p linux
-          #cd linux
-          #git init
-          #git config --global --add safe.directory '*'
-          #git remote add origin https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git
-          #echo "Fetching code..."
-          #git fetch origin --depth=5 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-          #echo "Fetch Done, resetting..."
-          #git reset --hard 36a5c03f232719eb4e2d925f4d584e09cfaf372c
-          #git fetch origin --depth=5 ${{ github.event.pull_request.head.sha }}
-          #git reset --hard ${{ github.event.pull_request.head.sha }}
-          echo "Ready to configure..."
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-      - name: Configure kernel
-        run: |
-          echo "********************************"
-          echo "Prepare minimal kernel config..."
-          echo "********************************"
-        continue-on-error: true
-      - name: Build kernel
-        run: |
-          echo "******************************"
-          echo "Compile repo on bare metal..."
-          echo "******************************"
-          make
-      - name: Execute tests
-        run: |
-          cd ..
+          pwd
+          ls -al
           echo "Under construction..."
-      - name: All done, cleanup
-        run: |          
-          cd ..
-          echo "Cleaning up..."
-          # TODO: add testing cleanup
-          vagrant halt
-          echo "FYI vagrant halt command finished with exit code: $?"
-          rm -rf linux
+      - uses: actions/send-mail@v3
+        with:
+          to: paul.e.luse@intel.com
+          subject: Workflow Completed
+          body: The workflow has successfully completed.
