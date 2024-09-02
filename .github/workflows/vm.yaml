@@ -24,6 +24,8 @@ jobs:
           ls -al
           gcc hello.c
           ./a.out
+      - name: test stuff
+        run: |
           echo "This is some output:"
           echo ${{ steps.test1.outputs.stdout }} 
           echo "End"
