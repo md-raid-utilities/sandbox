@@ -18,20 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the project
+        id: test1
         run: |
           pwd
           ls -al
           gcc hello.c
           ./a.out
           echo "This is some output:"
-          echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
-          echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
-          echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
-          echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
-          cat $GITHUB_STEP_SUMMARY
-          echo "Now the other one:"
-          cat  $GITHUB_OUTPUT      
+          echo ${{ steps.test1.outputs.stdout }} 
+          echo "End"
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
