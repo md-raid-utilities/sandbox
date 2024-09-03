@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-// testing
+// testingcc
 
 int main() {
     printf("test. Hello, World! Duh\n");
