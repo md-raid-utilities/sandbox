@@ -15,7 +15,7 @@ jobs:
         run: |
           make > out.txt 2>&1
           echo "Build SUCCESS" 
-          echo "${{github.event.pull_request.user.email}}"
+          echo " ${{ github.event.issue.pull_request }}"
           cat out.txt
       - name: Handle build failure
         if: failure()
