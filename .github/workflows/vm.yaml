@@ -15,11 +15,13 @@ jobs:
         run: |
           make > out.txt 2>&1
           echo "Build SUCCESS" 
+          echo "${{github.event.pull_request.user.email}}"
           cat out.txt
       - name: Handle build failure
         if: failure()
         run: |
           echo "Build FAILED" 
+          echo "${{github.event.pull_request.user.email}}"
           cat out.txt
       - name: Send build fail mail
         if: failure()
@@ -31,7 +33,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job result FAIL
-          to: ${{ github.event.pull_request.user.email }}
+          to: ${{github.event.pull_request.user.email}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
