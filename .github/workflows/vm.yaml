@@ -17,8 +17,8 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-          echo "author=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> "$GITHUB_OUTPUT"
-          echo "::set-output name=author::$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')""
+          echo "to=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> "$GITHUB_OUTPUT"
+          echo "::set-output name=to::$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')""
       - name: Handle build failure
         if: failure()
         run: |
@@ -26,7 +26,7 @@ jobs:
           cat out.txt
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@v1.0 #dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v1.1 #dawidd6/action-send-mail@v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -34,7 +34,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job result FAIL 1.1
-          to: ${{steps.build.outputs.author}}
+          to: ${{steps.build.outputs.to}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
