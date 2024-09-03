@@ -32,7 +32,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result FAIL
+          subject: Github Actions job result FAIL 1.1
           to: paul.e.luse@intel.com
           #${{steps.build.outputs.author}}
           from: md-raid-ci
