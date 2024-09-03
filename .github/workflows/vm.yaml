@@ -24,16 +24,16 @@ jobs:
           pwd
           ls -al
           make > out.txt 2>&1
-        continue-on-error: true
-      - name: test stuff
-        run: |
-          if [ $? -eq 0 ]; then
+          if [ $? -ne 0 ]; then
               echo "FAIL"
               $FAILED = "true"
           fi
           ls -al
           cat out.txt
           echo "YYY"
+        continue-on-error: true
+      - name: test stuff
+        run: |
           echo "This is some output:"
           echo ${{ steps.test1.outputs.stdout }} 
           echo "End"
