@@ -5,13 +5,7 @@ on:
   pull_request:
   push:
     branches: [ "main" ]
-
-env:
-    MAX_VAG_RETRIES: "3"
-    VAG_RETRY_DELAY: "5"
-    HOME_DIR: ${{ github.workspace }}"
-    REPO_NAME: ${{ github.repository_name }}
-      
+     
 jobs:
   per-patch-testing:
     runs-on: self-hosted
@@ -19,11 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build the project
         run: |
-          pwd
-          ls -al
           make > out.txt 2>&1
-        #continue-on-error: true
-      - name: test stuff
+      - name: Test for failure
         if: failure()
         run: |
           echo "Build FAILED" 
@@ -37,7 +28,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result 3
+          subject: Github Actions job result FAIL
           to: paul.e.luse@intel.com
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
@@ -45,9 +36,5 @@ jobs:
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
-          echo "This is the end:"
-          echo "${{steps.build.outputs.fail}}"
-          if [[ "${{steps.build.outputs.fail}}" == "true" ]]; then
-            exit 1
-          fi
+          echo "Build worked, no email"
 
