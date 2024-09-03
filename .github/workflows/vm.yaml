@@ -28,6 +28,8 @@ jobs:
               echo "FAIL"
               $FAILED = true
           fi
+          cat out.txt
+          echo "XXX"
         continue-on-error: true
       - name: test stuff
         run: |
@@ -42,7 +44,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result
+          subject: Github Actions job result X
           to: paul.e.luse@intel.com
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
