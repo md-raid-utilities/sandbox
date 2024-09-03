@@ -23,17 +23,20 @@ jobs:
           pwd
           ls -al
           make > out.txt 2>&1
+          echo "XXXXXX"
+          echo $1
         continue-on-error: true
       - name: test stuff
         run: |
+          ls -al
+          echo $1
           if [ $? -ne 0 ]; then
               echo "FAIL"
+              cat out.txt
               echo "fail=true" >> "$GITHUB_OUTPUT"
           else
               echo "fail=false" >> "$GITHUB_OUTPUT"
           fi
-          ls -al
-          cat out.txt
           echo "----------------"
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
@@ -49,7 +52,7 @@ jobs:
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
           reply_to: paul.e.luse@intel.com
-      - name: test stuff
+      - name: final stuff
         run: |
           echo "This is the end:"
           echo "${{steps.build.outputs.fail}}"
