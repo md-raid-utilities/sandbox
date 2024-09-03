@@ -29,6 +29,8 @@ jobs:
           if [ $? -ne 0 ]; then
               echo "FAIL"
               echo "fail=true" >> "$GITHUB_OUTPUT"
+          else
+              echo "fail=false" >> "$GITHUB_OUTPUT"
           fi
           ls -al
           cat out.txt
