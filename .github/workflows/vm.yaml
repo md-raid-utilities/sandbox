@@ -11,6 +11,7 @@ env:
     VAG_RETRY_DELAY: "5"
     HOME_DIR: ${{ github.workspace }}"
     REPO_NAME: ${{ github.repository_name }}
+    FAILED: false
       
 jobs:
   per-patch-testing:
@@ -25,6 +26,7 @@ jobs:
           make | tee out.txt
           if [ $? -eq 0 ]; then
               echo "FAIL"
+              $FAILED = true
           fi
       #- name: Upload artifacts
       #  uses: actions/upload-artifact@v4
@@ -50,6 +52,10 @@ jobs:
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
           reply_to: paul.e.luse@intel.com
+      - name: test stuff
+        run: |
+          echo "This is some output:"
+          echo $FAILED
 
 
           # Optional nodemailerlog: true/false
