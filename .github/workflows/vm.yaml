@@ -28,7 +28,7 @@ jobs:
               echo "FAIL"
               $FAILED = true
           fi
-          # cat out.txt
+          cat out.txt
           echo "XXX"
         continue-on-error: true
       - name: test stuff
@@ -53,10 +53,7 @@ jobs:
       - name: test stuff
         run: |
           echo "This is some output:"
-          echo $FAILED
+          if [ $FAILED -eq true ]; then
+             exit 1
+          fi
 
-
-          # Optional nodemailerlog: true/false
-          #nodemailerlog: false
-          # Optional nodemailerdebug: true/false if true lognodem will also be set true
-          #nodemailerdebug: false
