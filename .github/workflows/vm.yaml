@@ -14,7 +14,9 @@ jobs:
       - name: Build the project
         run: |
           make > out.txt 2>&1
-      - name: Test for failure
+          echo "Build SUCCESS" 
+          cat out.txt
+      - name: Check for build failure
         if: failure()
         run: |
           echo "Build FAILED" 
