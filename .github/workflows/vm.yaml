@@ -54,7 +54,9 @@ jobs:
       - name: test stuff
         run: |
           echo "This is some output:"
+          echo $FAILED
           if [[ "$FAILED" == "true" ]]; then
+             echo "ZZZZZZZZZZZZZZZZZZZZ"
              exit 1
           fi
 
