@@ -25,7 +25,7 @@ jobs:
           cat out.txt
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@v3
+        uses: peluse/action-send-mail
         with:
           server_address: smtp.gmail.com
           server_port: 465
