@@ -11,7 +11,7 @@ env:
     VAG_RETRY_DELAY: "5"
     HOME_DIR: ${{ github.workspace }}"
     REPO_NAME: ${{ github.repository_name }}
-    FAILED: false
+    FAILED: "false"
       
 jobs:
   per-patch-testing:
@@ -26,10 +26,11 @@ jobs:
           make > out.txt 2>&1
           if [ $? -eq 0 ]; then
               echo "FAIL"
-              $FAILED = true
+              $FAILED = "true"
           fi
+          ls -al
           cat out.txt
-          echo "XXX"
+          echo "YYY"
         continue-on-error: true
       - name: test stuff
         run: |
@@ -44,7 +45,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result Y
+          subject: Github Actions job result 1
           to: paul.e.luse@intel.com
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
@@ -53,7 +54,7 @@ jobs:
       - name: test stuff
         run: |
           echo "This is some output:"
-          if [ $FAILED -eq true ]; then
+          if [[ "$FAILED" == "true" ]]; then
              exit 1
           fi
 
