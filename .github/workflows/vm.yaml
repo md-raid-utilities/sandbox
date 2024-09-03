@@ -24,13 +24,11 @@ jobs:
           make > out.txt 2>&1
         continue-on-error: true
       - name: test stuff
+        if: failure()
         run: |
-          ls -al
-          if [[ ${{ failure() }} == true ]]; then
-            echo "Build FAILED" 
-            cat out.txt
-            exit 1
-          fi
+          echo "Build FAILED" 
+          cat out.txt
+          exit 1
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
