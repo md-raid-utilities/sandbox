@@ -22,7 +22,7 @@ jobs:
           pwd
           ls -al
           make > out.txt 2>&1
-        continue-on-error: true
+        #continue-on-error: true
       - name: test stuff
         if: failure()
         run: |
