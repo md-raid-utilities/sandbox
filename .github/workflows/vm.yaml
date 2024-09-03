@@ -11,7 +11,6 @@ env:
     VAG_RETRY_DELAY: "5"
     HOME_DIR: ${{ github.workspace }}"
     REPO_NAME: ${{ github.repository_name }}
-    FAILED: "false"
       
 jobs:
   per-patch-testing:
@@ -19,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the project
-        id: test1
+        id: build
         run: |
           pwd
           ls -al
@@ -29,14 +28,11 @@ jobs:
         run: |
           if [ $? -ne 0 ]; then
               echo "FAIL"
-              $FAILED = "true"
+              echo "fail=true" >> "$GITHUB_OUTPUT"
           fi
           ls -al
           cat out.txt
-          echo "YYY"
-          echo "This is some output:"
-          echo ${{ steps.test1.outputs.stdout }} 
-          echo "End"
+          echo "----------------"
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
@@ -45,7 +41,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result 1
+          subject: Github Actions job result 2
           to: paul.e.luse@intel.com
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
@@ -53,10 +49,9 @@ jobs:
           reply_to: paul.e.luse@intel.com
       - name: test stuff
         run: |
-          echo "This is some output:"
-          echo $FAILED
-          if [[ "$FAILED" == "true" ]]; then
-             echo "ZZZZZZZZZZZZZZZZZZZZ"
-             exit 1
+          echo "This is the end:"
+          echo "${{steps.build.outputs.fail}}"
+          if [[ "${{steps.build.outputs.fail}}" == "true" ]]; then
+            exit 1
           fi
 
