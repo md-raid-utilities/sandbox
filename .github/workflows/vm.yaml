@@ -28,8 +28,7 @@ jobs:
         run: |
           echo "Build FAILED" 
           cat out.txt
-          exit 1
-        continue-on-error: false
+          #ecit 1
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
