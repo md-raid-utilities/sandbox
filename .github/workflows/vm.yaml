@@ -23,7 +23,7 @@ jobs:
         run: |
           pwd
           ls -al
-          make | tee out.txt
+          make > out.txt
           if [ $? -eq 0 ]; then
               echo "FAIL"
               $FAILED = true
