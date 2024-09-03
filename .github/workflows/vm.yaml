@@ -23,6 +23,9 @@ jobs:
           pwd
           ls -al
           make | tee out.txt
+          if [ $? -eq 0 ]; then
+              echo "FAIL"
+          fi
       #- name: Upload artifacts
       #  uses: actions/upload-artifact@v4
       #  with:
