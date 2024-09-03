@@ -23,12 +23,12 @@ jobs:
         run: |
           pwd
           ls -al
-          make > out.txt
+          make > out.txt 2>&1
           if [ $? -eq 0 ]; then
               echo "FAIL"
               $FAILED = true
           fi
-          cat out.txt
+          # cat out.txt
           echo "XXX"
         continue-on-error: true
       - name: test stuff
@@ -44,7 +44,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result X
+          subject: Github Actions job result Y
           to: paul.e.luse@intel.com
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
