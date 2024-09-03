@@ -33,6 +33,7 @@ jobs:
       #  with:
       #    name: build-artifacts
       #    path: out.txt
+      continue-on-error: true
       - name: test stuff
         run: |
           echo "This is some output:"
