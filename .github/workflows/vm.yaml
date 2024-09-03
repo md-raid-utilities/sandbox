@@ -16,12 +16,12 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-      - name: Check for build failure
+      - name: Handle build failure
         if: failure()
         run: |
           echo "Build FAILED" 
           cat out.txt
-      - name: Send mail
+      - name: Send build fail mail
         if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
