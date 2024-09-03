@@ -17,6 +17,10 @@ jobs:
           echo "Build SUCCESS" 
           echo " ${{ github.event.issue.pull_request }}"
           cat out.txt
+      - name: Print GitHub context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Handle build failure
         if: failure()
         run: |
