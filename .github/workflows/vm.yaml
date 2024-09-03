@@ -12,10 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the project
+        id: build
         run: |
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
+          echo "author=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> "$GITHUB_OUTPUT"
       - name: Handle build failure
         if: failure()
         run: |
@@ -31,7 +33,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job result FAIL
-          to: ${{ github.event.pull_request.user.email }}
+          to: ${{steps.build.outputs.author}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
