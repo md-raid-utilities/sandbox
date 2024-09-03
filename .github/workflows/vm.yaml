@@ -34,7 +34,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job result FAIL 1.1
-          to: ${{ steps.build.outputs.author }}
+          to: ${{steps.build.outputs.author}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
