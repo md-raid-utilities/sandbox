@@ -16,7 +16,7 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           signed_off_by=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')
-          echo "Signed-off-by: $(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')"
+          #echo "Signed-off-by: $(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')"
 
           cat out.txt
       #- name: Print GitHub context
@@ -39,7 +39,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job result FAIL
-          to: ${{github.event.pull_request.user.email}}
+          to: $(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}'
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
           attachments: out.txt
