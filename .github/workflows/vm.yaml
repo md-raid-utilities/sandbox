@@ -16,8 +16,8 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           signed_off_by=$(git log -1 HEAD --format='%s' | grep -o 'Signed-off-by: .*')
-          echo "Signed-off-by: (git log -1 HEAD --format='%s' | grep -o 'Signed-off-by: .*')"
-          echo " ${{ github.event.issue.pull_request }}"
+          #echo "Signed-off-by: (git log -1 HEAD --format='%s' | grep -o 'Signed-off-by: .*')"
+
           cat out.txt
       #- name: Print GitHub context
       #  run: echo "$GITHUB_CONTEXT"
