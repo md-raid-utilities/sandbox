@@ -17,7 +17,7 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-          echo "author=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> "$GITHUB_OUTPUT"
+          echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" > artifact.txt
       - name: Handle build failure
         if: failure()
         run: |
@@ -30,9 +30,13 @@ jobs:
       #  run: |
       #    npm install @actions/github
       #    npm install @actions/core
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my_artifact
+          path: artifact.txt
       - name: Send build fail mail
         #if: failure()
-        uses: peluse/action-send-mail@v1 #dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v3 #dawidd6/action-send-mail@v3.12.0
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           server_address: smtp.gmail.com
@@ -40,7 +44,7 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result FAIL
+          subject: Github Actions job result PASS
           to: paul.e.luse@intel.com
           #paul.e.luse@intel.com
           #${{steps.build.outputs.author}}
