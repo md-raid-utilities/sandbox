@@ -10,6 +10,11 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install @actions/github
+        run: npm install @actions/github
       - uses: actions/checkout@v4
       - name: Build the project
         id: build
