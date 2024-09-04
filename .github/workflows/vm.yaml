@@ -23,13 +23,17 @@ jobs:
         run: |
           echo "Build FAILED" 
           cat out.txt
-      #- uses: actions/setup-node@v3
-      #  with:
-      #    node-version: 20.13.1
-      - name: Install Dependencies
-        run: |
-          npm install @actions/github
-          npm install @actions/core
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.13.1
+      #- name: Install Dependencies
+      #  run: |
+      #    npm install @actions/github
+      #    npm install @actions/core
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
       - name: Send build fail mail
         #if: failure()
         uses: peluse/action-send-mail@v1.0 #dawidd6/action-send-mail@v3.12.0
