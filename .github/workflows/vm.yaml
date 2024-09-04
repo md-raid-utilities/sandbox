@@ -24,10 +24,13 @@ jobs:
         run: |
           echo "Build FAILED" 
           cat out.txt
+      - name: install node jd
+        if: failure()
       - uses: actions/setup-node@v3
         with:
           node-version: 20.13.1
       - name: Install @actions/github
+        if: failure()
         run: npm install @actions/github
       - name: Send build fail mail
         if: failure()
