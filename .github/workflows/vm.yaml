@@ -36,7 +36,7 @@ jobs:
           path: artifact.txt
       - name: Send build fail mail
         #if: failure()
-        uses: peluse/action-send-mail@1 #  dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@2 #  dawidd6/action-send-mail@v3.12.0
         with:
           #github_token: ${{secrets.GITHUB_TOKEN}}
           server_address: smtp.gmail.com
