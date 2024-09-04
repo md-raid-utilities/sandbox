@@ -24,7 +24,7 @@ jobs:
           echo "Build FAILED" 
           cat out.txt
       - name: Send build fail mail
-        if: failure()
+        #if: failure()
         uses: dawidd6/action-send-mail@v3.12.0
         with:
           server_address: smtp.gmail.com
