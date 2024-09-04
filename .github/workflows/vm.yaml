@@ -10,11 +10,6 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20.13.1
-      - name: Install @actions/github
-        run: npm install @actions/github
       - uses: actions/checkout@v4
       - name: Build the project
         id: build
@@ -29,6 +24,11 @@ jobs:
         run: |
           echo "Build FAILED" 
           cat out.txt
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.13.1
+      - name: Install @actions/github
+        run: npm install @actions/github
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.0 #dawidd6/action-send-mail@v3.12.0
