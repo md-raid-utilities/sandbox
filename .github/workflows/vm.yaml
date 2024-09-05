@@ -23,6 +23,7 @@ jobs:
         run: |
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
             echo "Patch likely meant for mdadm repo, aborting" > out.txt
+            ls -al
             cat out.txt
             exit 1
           fi
@@ -46,6 +47,7 @@ jobs:
         if: failure()
         run: |
           echo "Build FAILURE" 
+          ls -al
           cat out.txt
       - name: Send build fail mail
         if: failure()
