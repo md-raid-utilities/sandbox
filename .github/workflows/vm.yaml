@@ -13,7 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Filter mis-routed mdadm patches
         run: |
-          echo "SUBJECT=$(git log -n 1 --pretty=%s)" >> $GITHUB_ENV 
+          echo "SUBJECT=$(git show -s 1 --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
+          echo "${{ env.SUBJECT }}"
           if [[ "$SUBJECT" == *"mdadm"* ]]; then
             echo "String found"
             exit 0
@@ -31,7 +32,7 @@ jobs:
         run: |
           echo "Build FAILED" 
           cat out.txt
-          echo "USER_EMAIL=$(git log -n 1 --pretty=%ae)" >> $GITHUB_ENV 
+          echo "USER_EMAIL=$(git show -s 1 --pretty=%ae ${{ github.event.pull_request.head.sha }}))" >> $GITHUB_ENV 
       #- uses: actions/setup-node@v3
       #  with:
       #    node-version: 20.13.1
