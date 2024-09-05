@@ -22,7 +22,8 @@ jobs:
       - name: Filter mis-routed mdadm patches
         run: |
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
-            echo "Patch likely meant for mdadm repo, aborting"
+            echo "Patch likely meant for mdadm repo, aborting" > out.txt
+            cat out.txt
             exit 1
           fi
         continue-on-error: false
