@@ -31,10 +31,10 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-      - uses: actions/checkout@v4
-        if: failure()
-        with:
-          fetch-depth: 0 #needed for next step to work
+      #- uses: actions/checkout@v4
+      #  if: failure()
+      #  with:
+      #    fetch-depth: 0 #needed for next step to work
       - name: Get user's e-mail
         if: failure()
         run: |
