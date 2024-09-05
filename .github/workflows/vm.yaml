@@ -17,7 +17,6 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-          #echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
       - name: Handle build failure
         if: failure()
         run: |
@@ -37,7 +36,7 @@ jobs:
       #    path: artifact.txt
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@1 # xx dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v1.0 # xx dawidd6/action-send-mail@v3.12.0
         with:
           #github_token: ${{secrets.GITHUB_TOKEN}}
           server_address: smtp.gmail.com
