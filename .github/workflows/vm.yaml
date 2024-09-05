@@ -11,6 +11,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # You need this to grab all of the branches.
       - name: Get user's e-mail
         id: user_email
         run: |
