@@ -11,36 +11,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - name: Get PR Author
-        id: get-author
-        uses: actions/github-script@v6
-        with:
-          script: |
-            // Fetch PR details
-            const { data: pullRequest } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-
-            // Extract author login and URL
-            const author = pullRequest.user.login;
-            const authorUrl = pullRequest.user.html_url;
-
-            console.log(`Author: ${author}`);
-            console.log(`Author URL: ${authorUrl}`);
-
-            // Return author details
-            return { login: author, url: authorUrl };
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Print author details
-        run: |
-          echo "PR Author: ${{ steps.get-author.outputs.login }}"
-          echo "Author Profile: ${{ steps.get-author.outputs.url }}"
       - name: Filter mis-routed mdadm patches
         run: |
+
+          echo "Pull request msg: ${{ github.event.head_commit.message }}"        
           echo "now pr title"
           echo "Pull request title: ${{ github.event.pull_request.title }}"
 
