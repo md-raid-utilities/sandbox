@@ -10,6 +10,9 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
+      - name: Filter mis-routed patches
+        run: |
+          echo "IS_MADM=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
       - uses: actions/checkout@v4
       - name: Build the project
         id: build
