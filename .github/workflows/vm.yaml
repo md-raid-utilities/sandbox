@@ -18,10 +18,17 @@ jobs:
 
           echo "Pull request sender.id: ${{ github.event.sender.id }}"
           echo "Pull request sender.login: ${{ github.event.sender.login }}"
-          echo "USER_EMAIL=${{github.event.sender.id }}+${{ github.event.sender.login }}\@${{users.noreply.github.com }}"
-          echo "email"
+          sender="${{ github.event.sender.id }}"
+          login="${{ github.event.sender.login }}"
+          domain="users.noreply.github.com"
+          email="$sender+$login@$domain"
+          echo $login
+          echo $domain
+          echo $email
+          echo "USER_EMAIL=$email" >> $GITHUB_ENV 
+          echo "USER_EMAIL"
           echo "${{ env.USER_EMAIL }}"
-          echo "email"
+          echo "USER_EMAIL"
           #echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
           echo "SUBJECT=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
           echo "${{ env.SUBJECT }}"
