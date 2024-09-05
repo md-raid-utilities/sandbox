@@ -21,16 +21,11 @@ jobs:
         continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
-          echo "SUBJECT=$(${{ github.event.pull_request.title }})" >> $GITHUB_ENV 
-          echo "here comes title..."
-          echo "${{ env.SUBJECT }}"
-          echo "here comes title..."
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
-            echo "String found"
-            exit 0
-          else
-            echo "String not found"
+            echo "Patch likely meant for mdadm repo, aborting"
+            exit 1
           fi
+        continue-on-error: false
       - name: Build the project
         id: build
         run: |
@@ -40,25 +35,12 @@ jobs:
       - name: Handle build failure
         if: failure()
         run: |
-          echo "Build FAILED" 
+          echo "Build FAILURE" 
           cat out.txt
-          #echo "USER_EMAIL=$(git show -s --pretty=%ae ${{ github.event.pull_request.head.sha }}))" >> $GITHUB_ENV 
-      #- uses: actions/setup-node@v3
-      #  with:
-      #    node-version: 20.13.1
-      #- name: Install Dependencies
-      #  run: |
-      #    npm install @actions/github
-      #    npm install @actions/core
-      #- uses: actions/upload-artifact@v4
-      #  with:
-      #    name: my_artifact
-      #    path: artifact.txt
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.0 # xx dawidd6/action-send-mail@v3.12.0
         with:
-          #github_token: ${{secrets.GITHUB_TOKEN}}
           server_address: smtp.gmail.com
           server_port: 465
           ignore_cert: true
@@ -66,12 +48,10 @@ jobs:
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job FAILURE
           to: ${{ env.USER_EMAIL }}
-          #paul.e.luse@intel.com
-          #${{steps.build.outputs.author}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed with failure! See attachment.
           attachments: out.txt
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
-          echo "Build worked, no email"
+          echo "Build worked, no email sent"
