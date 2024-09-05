@@ -11,6 +11,17 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      - name: Get commit message
+        run: |
+          # Fetch the list of commits for the PR
+          PR_COMMITS=$(gh pr view ${{ github.event.pull_request.number }} --json commits -q ".commits[].oid")
+          
+          # Print the commit messages
+          for COMMIT in $PR_COMMITS; do
+            git log -1 --format=%B $COMMIT
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Filter mis-routed mdadm patches
         run: |
           echo "now pr title"
@@ -30,11 +41,7 @@ jobs:
           echo "${{ env.USER_EMAIL }}"
           echo "USER_EMAIL"
 
-          echo "Commit message: ${{ github.event.pull_request.head.sha }}"
-          echo "git show s"
-          git show -s --format=%s ${{ github.event.pull_request.head.sha }}
-          echo "git show ae" 
-          git show -s --format=%ae ${{ github.event.pull_request.head.sha }}          
+      
           #echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
           echo "SUBJECT=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
           echo "${{ env.SUBJECT }}"
