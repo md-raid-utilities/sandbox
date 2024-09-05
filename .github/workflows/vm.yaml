@@ -17,12 +17,13 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
+          #echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
+      - name: Handle build failure
+        if: failure()
+        run: |
+          echo "Build FAILED" 
+          cat out.txt
           echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
-      #- name: Handle build failure
-      #  if: failure()
-      #  run: |
-      #    echo "Build FAILED" 
-      #    cat out.txt
       #- uses: actions/setup-node@v3
       #  with:
       #    node-version: 20.13.1
@@ -35,7 +36,7 @@ jobs:
       #    name: my_artifact
       #    path: artifact.txt
       - name: Send build fail mail
-        #if: failure()
+        if: failure()
         uses: peluse/action-send-mail@1 # xx dawidd6/action-send-mail@v3.12.0
         with:
           #github_token: ${{secrets.GITHUB_TOKEN}}
@@ -44,12 +45,12 @@ jobs:
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job result TEST
+          subject: Github Actions job result: FAIL
           to: ${{ env.USER_EMAIL }}
           #paul.e.luse@intel.com
           #${{steps.build.outputs.author}}
           from: md-raid-ci
-          body: Build job of ${{github.repository}} completed successfully!
+          body: Build job of ${{github.repository}} completed with failure! See attachment.
           attachments: out.txt
           reply_to: paul.e.luse@intel.com
       - name: final stuff
