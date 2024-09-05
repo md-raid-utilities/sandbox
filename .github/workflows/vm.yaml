@@ -10,10 +10,15 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
-      - name: Filter mis-routed patches
+      - name: Filter mis-routed mdadm patches
         run: |
           echo "SUBJECT=$(git log -n 1 --pretty=%s)" >> $GITHUB_ENV 
-          echo "$SUBJECT"
+          if [[ "$SUBJECT" == *"mdadm"* ]]; then
+            echo "String found"
+            exit 0
+          else
+            echo "String not found"
+          fi
       - uses: actions/checkout@v4
       - name: Build the project
         id: build
