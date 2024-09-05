@@ -45,8 +45,7 @@ jobs:
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
           subject: Github Actions job result PASS
-          to: ${{ github.actor }}
-          #paul.e.luse@intel.com
+          to: paul.e.luse@intel.com
           #${{steps.build.outputs.author}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
