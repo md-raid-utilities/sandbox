@@ -22,7 +22,7 @@ jobs:
       - name: Filter mis-routed mdadm patches
         run: |
           echo "SUBJECT=$(${{ github.event.pull_request.title }})" >> $GITHUB_ENV 
-          echo "here comes title..."
+          echo "here comes title... ${{ github.event.pull_request.title }}"
           echo "${{ env.SUBJECT }}"
           echo "here comes title..."
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
