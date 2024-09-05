@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Filter mis-routed patches
         run: |
-          echo "IS_MADM=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
+          echo "SUBJECT=$(git log -n 1 --pretty=%s)" >> $GITHUB_ENV 
+          echo "${{ env.SUBJECT }}"
       - uses: actions/checkout@v4
       - name: Build the project
         id: build
@@ -25,7 +26,7 @@ jobs:
         run: |
           echo "Build FAILED" 
           cat out.txt
-          echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
+          echo "USER_EMAIL=$(git log -n 1 --pretty=%ae)" >> $GITHUB_ENV 
       #- uses: actions/setup-node@v3
       #  with:
       #    node-version: 20.13.1
