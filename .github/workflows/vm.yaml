@@ -21,8 +21,10 @@ jobs:
         continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
-          echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
+          echo "SUBJECT=$(${{ github.event.pull_request.title }})" >> $GITHUB_ENV 
+          echo "here comes title..."
           echo "${{ env.SUBJECT }}"
+           echo "here comes title..."
           if [[ "$SUBJECT" == *"mdadm"* ]]; then
             echo "String found"
             exit 0
