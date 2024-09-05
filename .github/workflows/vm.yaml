@@ -18,7 +18,7 @@ jobs:
 
           echo "Pull request sender.id: ${{ github.event.sender.id }}"
           echo "Pull request sender.login: ${{ github.event.sender.login }}"
-          echo "USER_EMAIL=${{ github.event.sender.id }}+${{ github.event.sender.login@users.noreply.github.com }}"
+          echo "USER_EMAIL=${{ github.event.sender.id }}+${{ github.event.sender.login\@users.noreply.github.com }}"
           echo "email"
           echo "${{ env.USER_EMAIL }}"
           echo "email"
