@@ -16,7 +16,7 @@ jobs:
 
           echo "Pull request author: ${{ github.event.pull_request.user.login }}"
           echo "Pull request title: ${{ github.event.pull_request.title }}"
-          echo "Pull request body: ${{ ithub.event.pull_request.body }}"
+          echo "Pull request body: ${{ github.event.pull_request.body }}"
           echo "Pull request sender.id: ${{ github.event.sender.id }}"
           echo "Pull request sender.login: ${{ github.event.sender.login }}"
           sender="${{ github.event.sender.id }}"
