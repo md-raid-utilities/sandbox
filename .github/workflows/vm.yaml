@@ -13,6 +13,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Filter mis-routed mdadm patches
         run: |
+          pwd
+          ls -al
+          git log
+          git show -s --format=%s ${{ github.event.pull_request.head.sha }}
           echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
           echo "${{ env.SUBJECT }}"
           if [[ "$SUBJECT" == *"mdadm"* ]]; then
