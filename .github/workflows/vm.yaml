@@ -17,7 +17,7 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-          echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" > artifact.txt
+          echo "USER_EMAIL=$(git log -1 HEAD | grep -m 1 -E -o '[[:alnum:]\._-]+@[[:alnum:]\._-]+\.[[:alnum:]]{2,}')" >> $GITHUB_ENV 
       - name: Handle build failure
         if: failure()
         run: |
@@ -50,7 +50,7 @@ jobs:
           #${{steps.build.outputs.author}}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed successfully!
-          attachments: out.txt
+          #attachments: out.txt
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
