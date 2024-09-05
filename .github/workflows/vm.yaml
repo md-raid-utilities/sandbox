@@ -18,6 +18,7 @@ jobs:
         run: |
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
+        continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
           echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
