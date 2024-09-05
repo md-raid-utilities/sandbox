@@ -33,8 +33,6 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-      - name: Update repo for failure handling    
-        if: failure()
       - uses: actions/checkout@v4
         if: failure()
         with:
