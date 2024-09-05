@@ -22,8 +22,7 @@ jobs:
       - name: Filter mis-routed mdadm patches
         run: |
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
-            echo "Patch likely meant for mdadm repo, aborting" > out.txt
-            cat out.txt
+            echo "MDADM='Patch likely meant for mdadm repo, aborting'" >> $GITHUB_ENV
             exit 1
           fi
       - name: Build the project
@@ -42,10 +41,15 @@ jobs:
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
         continue-on-error: false
-      - name: Handle build failure
+      - name: Handle failure
         if: failure()
         run: |
-          echo "Build FAILURE" 
+         echo "${{ env.USER_EMAIL }} and ${{ env.MDADM }}"
+         if [[ -n "${{ env.USER_EMAIL }}" ]]; then
+            echo "Build FAILURE" 
+          else
+            echo "${{ env.MDADM }}" > out.txt
+          fi
           cat out.txt
       - name: Send build fail mail
         if: failure()
