@@ -29,6 +29,12 @@ jobs:
           echo "USER_EMAIL"
           echo "${{ env.USER_EMAIL }}"
           echo "USER_EMAIL"
+
+          echo "Commit message: ${{ github.event.pull_request.head.sha }}"
+          echo "git show s"
+          git show -s --format=%s ${{ github.event.pull_request.head.sha }}
+          echo "git show ae" 
+          git show -s --format=%ae ${{ github.event.pull_request.head.sha }}          
           #echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
           echo "SUBJECT=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
           echo "${{ env.SUBJECT }}"
