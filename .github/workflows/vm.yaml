@@ -24,8 +24,8 @@ jobs:
           echo "SUBJECT=$(${{ github.event.pull_request.title }})" >> $GITHUB_ENV 
           echo "here comes title..."
           echo "${{ env.SUBJECT }}"
-           echo "here comes title..."
-          if [[ "$SUBJECT" == *"mdadm"* ]]; then
+          echo "here comes title..."
+          if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
             echo "String found"
             exit 0
           else
