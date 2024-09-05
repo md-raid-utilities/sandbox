@@ -18,10 +18,14 @@ jobs:
 
           echo "Pull request sender.id: ${{ github.event.sender.id }}"
           echo "Pull request sender.login: ${{ github.event.sender.login }}"
+          echo "USER_EMAIL=${{ github.event.sender.id }}+${{ github.event.sender.login@users.noreply.github.com }}
+          echo "email"
+          echo "${{ env.USER_EMAIL }}"
+          echo "email"
           #echo "SUBJECT=$(git show -s --pretty=%s ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV 
           echo "SUBJECT=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
           echo "${{ env.SUBJECT }}"
-          if [[ "${{ env.SUBJECT }}" == *"mdadm"* ]]; then
+          if [[ "${{ github.event.pull_request.titleT }}" == *"mdadm"* ]]; then
             echo "String found"
             exit 0
           else
