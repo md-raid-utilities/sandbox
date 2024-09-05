@@ -45,12 +45,12 @@ jobs:
         if: failure()
         run: |
          echo "${{ env.USER_EMAIL }} and ${{ env.MDADM }}"
-         if [[ -n "${{ env.USER_EMAIL }}" ]]; then
-            echo "Build FAILURE" 
-         else
+         if [[ -n "${{ env.MDADM }}" ]]; then
             echo "XXXXXXXX"
             echo "${{ env.MDADM }}" > out.txt
             ls -al
+         else
+            echo "Build FAILURE"
          fi
          cat out.txt
       - name: Send build fail mail
