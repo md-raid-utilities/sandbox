@@ -32,6 +32,8 @@ jobs:
 
             // Return author details
             return { login: author, url: authorUrl };
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Print author details
         run: |
