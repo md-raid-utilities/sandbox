@@ -18,7 +18,7 @@ jobs:
         run: |
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
-        continue-on-error: true
+        #continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
@@ -32,16 +32,16 @@ jobs:
           make > out.txt 2>&1
           echo "Build SUCCESS" 
           cat out.txt
-      - uses: actions/checkout@v4
-        if: failure()
-        with:
-          fetch-depth: 0 #needed for next step to work
-      - name: Get user's e-mail
-        if: failure()
-        run: |
-          git checkout remotes/origin/${{ github.head_ref }}
-          echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
-        continue-on-error: false
+      #- uses: actions/checkout@v4
+      #  if: failure()
+      #  with:
+      #    fetch-depth: 0 #needed for next step to work
+      #- name: Get user's e-mail
+      #  if: failure()
+      #  run: |
+      #    git checkout remotes/origin/${{ github.head_ref }}
+      #    echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
+      #  continue-on-error: false
       - name: Handle build failure
         if: failure()
         run: |
