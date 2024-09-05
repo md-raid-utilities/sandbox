@@ -11,17 +11,18 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - name: Get commit message
-        run: |
-          # Fetch the list of commits for the PR
-          PR_COMMITS=$(gh pr view ${{ github.event.pull_request.number }} --json commits -q ".commits[].oid")
-          
-          # Print the commit messages
-          for COMMIT in $PR_COMMITS; do
-            git log -1 --format=%B $COMMIT
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fetch PR details
+        id: pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: pullRequest } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            console.log('Author Email:', pullRequest.user.email || 'No email found');
+            return pullRequest.user.email || 'No email found';
       - name: Filter mis-routed mdadm patches
         run: |
           echo "now pr title"
