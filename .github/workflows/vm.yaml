@@ -13,7 +13,7 @@ jobs:
       - name: Filter mis-routed patches
         run: |
           echo "SUBJECT=$(git log -n 1 --pretty=%s)" >> $GITHUB_ENV 
-          echo "${{ env.SUBJECT }}"
+          echo "$SUBJECT"
       - uses: actions/checkout@v4
       - name: Build the project
         id: build
