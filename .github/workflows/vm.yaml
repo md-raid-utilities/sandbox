@@ -11,14 +11,14 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      #  with:
-      #    fetch-depth: 0 #needed for next step to work
-      #- name: Get user's e-mail
-      #  id: user_email
-      #  run: |
-      #    git checkout remotes/origin/${{ github.head_ref }}
-      #    echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
-      #  continue-on-error: true
+        with:
+          fetch-depth: 0 #needed for next step to work
+      - name: Get user's e-mail
+        id: user_email
+        run: |
+          git checkout remotes/origin/${{ github.head_ref }}
+          echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
+        continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
@@ -26,7 +26,7 @@ jobs:
             cat out.txt
             exit 1
           fi
-        #continue-on-error: false
+        continue-on-error: false
       - name: Build the project
         id: build
         run: |
@@ -39,7 +39,6 @@ jobs:
           fetch-depth: 0 #needed for next step to work
       - name: Get user's e-mail
         if: failure()
-        id: user_email
         run: |
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
