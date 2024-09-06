@@ -21,6 +21,9 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
+          my_list=("apple" "banana" "orange")
+          comma_separated_string=$(join -v 1 -o 1.1 ', ' "${my_list[@]}")
+          echo "$comma_separated_string"
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
         # TODO:  remove next line, here for testing only as push of yaml won't work without iy
