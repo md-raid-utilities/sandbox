@@ -52,7 +52,8 @@ jobs:
          att_string=$(echo "${{ matrix.maiL_artifacts }}" | paste -sd ",")
          echo "ATTACHMENTS=$att_string" >> $GITHUB_ENV
          echo "$WRONG_REPO : $BUILD_OUT"
-         echo "raw list: $att_string"
+         echo "raw list: $maiL_artifacts"
+         echo "string: $att_string"
          echo "expanded: $(echo '${{ matrix.maiL_artifacts }}' | paste -sd ',')"
          echo "the list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
