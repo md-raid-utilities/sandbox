@@ -1,8 +1,7 @@
 #include <stdio.h>
 
 // testing .
-
-int main() {;
+dfgdfg
     printf("test. Hello, World! Duh\n");
     return 0;
 }
