@@ -60,6 +60,7 @@ jobs:
           ignore_cert: true
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSKEY }}
+          # the nexxt two fields are ignored, the GHA uses the env vars regardless.
           subject: ${{ env.SUBJECT }} 
           to: ${{ env.USER_EMAIL }}
           from: md-raid-ci
