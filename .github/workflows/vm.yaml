@@ -62,6 +62,8 @@ jobs:
             mail_attach+=($BUILD_OUT)
             cat $BUILD_OUT
          fi
+         echo "Pre list: ${mail_attach[@]}"
+         printf "pf: %s\n" "${mail_attach[@]}"
          IFS=',' # make the list comma separated for the mailer
          echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
          echo "Raw list: ${mail_attach[*]}"
