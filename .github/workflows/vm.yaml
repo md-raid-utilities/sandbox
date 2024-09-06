@@ -39,7 +39,7 @@ jobs:
           make > $BUILD_OUT 2>&1
           echo "Build SUCCESS" 
           cat $BUILD_OUT
-      - name: Handle failure
+      - name: Failure information
         if: failure()
         run: |
          if [[ -n "${{ env.MDADM }}" ]]; then
