@@ -38,9 +38,9 @@ jobs:
       - name: Build the project
         id: build
         run: |
-          make > ok.txt 2>&1
+          make > out.txt 2>&1
           echo "Build SUCCESS"
-          cat ok.txt
+          cat out.txt
       - name: Failure information
         if: failure()
         run: |
