@@ -18,7 +18,7 @@ jobs:
         run: |
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
-          echo "SUBJECT=Github Actions job FAILURE for ${{ env.USER_EMAIL }}" >> $GITHUB_ENV
+          echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
         continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
