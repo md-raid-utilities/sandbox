@@ -50,6 +50,9 @@ jobs:
             cat $BUILD_FAIL
          fi
          echo "ATTACHMENTS=$(env_var=$(echo "$maiL_artifacts" | tr ',' ' '))" >> $GITHUB_ENV
+         echo "$WRONG_REPO : $BUILD_FAIL"
+         echo "raw list: $maiL_artifacts"
+         echo "expanded: $(env_var=$(echo "$maiL_artifacts" | tr ',' ' '))"
          echo "the list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
