@@ -16,6 +16,7 @@ jobs:
       - name: Checkout source
         run: |
           cd ..
+          rm -rf sandtmp
           mkdir -p sandtmp
           cd sandtmp
           git init
