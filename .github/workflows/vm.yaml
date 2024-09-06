@@ -19,11 +19,11 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
+          echo "MAIL_ATTACH=$JOB_OUT" >> $GITHUB_ENV 
           echo "Pull Request Info:" > $JOB_OUT
-          echo "Pull request author: ${{ github.event.pull_request.user.login }}" >> $JOB_OUT
-          echo "Pull request title: ${{ github.event.pull_request.title }}" >> $JOB_OUT
-          echo "Pull request body: ${{ github.event.pull_request.body }}" >> $JOB_OUT
-          cat $JOB_OUT
+          echo "Author: ${{ github.event.pull_request.user.login }}" >> $JOB_OUT
+          echo "Title: ${{ github.event.pull_request.title }}" >> $JOB_OUT
+          echo "Body: ${{ github.event.pull_request.body }}" >> $JOB_OUT
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
@@ -38,10 +38,9 @@ jobs:
       - name: Build the project
         id: build
         run: |
-          echo "Build Success:" >> $JOB_OUT
-          make >> $JOB_OUT 2>&1
-          echo "Build SUCCESS" :
-          cat $JOB_OUT
+          make > ok.txt 2>&1
+          echo "Build SUCCESS"
+          cat ok.txt
       - name: Failure information
         if: failure()
         run: |
@@ -51,8 +50,6 @@ jobs:
          else
             echo "Build FAILURE" >> $JOB_OUT
          fi
-         pwd
-         ls -al
          cat $JOB_OUT
       - name: Send build fail mail
         if: failure()
@@ -68,7 +65,7 @@ jobs:
           #${{ env.USER_EMAIL }}
           from: md-raid-ci
           body: Build job of ${{ github.repository }} completed with failure! See attachments.
-          attachments: $JOB_OUT 
+          attachments: ${{ env.MAIL_ATTACH }}
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
