@@ -18,6 +18,7 @@ jobs:
         run: |
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
+          echo "SUBJECT=Github Actions job FAILURE for ${{ env.USER_EMAIL }}" >> $GITHUB_ENV
         continue-on-error: true
       - name: Filter mis-routed mdadm patches
         run: |
@@ -53,15 +54,17 @@ jobs:
          cat out.txt
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@v1.0 # xx dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v1.1 # xx dawidd6/action-send-mail@v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
           ignore_cert: true
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSKEY}}
-          subject: Github Actions job FAILURE
-          to: ${{ env.USER_EMAIL }}
+          subject: ${{ env.SUBJECT }} 
+          #Github Actions job FAILURE
+          to: paul.e.luse@intel.com
+          #${{ env.USER_EMAIL }}
           from: md-raid-ci
           body: Build job of ${{github.repository}} completed with failure! See attachment.
           attachments: out.txt
