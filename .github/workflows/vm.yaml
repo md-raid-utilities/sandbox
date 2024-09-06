@@ -58,6 +58,7 @@ jobs:
          fi
          IFS=',' # make the list comma separated for the mailer
          echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
+         echo "Raw list: ${mail_attach[*]}"
          echo "The list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
@@ -72,8 +73,7 @@ jobs:
           to: paul.e.luse@intel.com
           #${{ env.USER_EMAIL }}
           from: md-raid-ci
-          body: Build job of ${{ github.repository }} completed with failure! See attachment.
-            Can this me multi line?
+          body: Build job of ${{ github.repository }} completed with failure! See attachments.
           attachments: ${{ env.ATTACHMENTS }} 
           reply_to: paul.e.luse@intel.com
       - name: final stuff
