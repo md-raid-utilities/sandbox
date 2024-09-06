@@ -15,10 +15,12 @@ jobs:
       #    fetch-depth: 0 #needed for next step to work
       - name: Checkout source
         run: |
+          cd ..
           mkdir -p sandtmp
           cd sandtmp
           git init
           git config --global --add safe.directory '*'
+          echo "add origin https://github.com/${{ github.repository }}"
           git remote add origin https://github.com/${{ github.repository }}
           echo "Fetching code..."
           git fetch origin --depth=1 ${{ github.event.pull_request.head.sha }}
