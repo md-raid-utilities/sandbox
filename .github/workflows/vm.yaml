@@ -45,7 +45,7 @@ jobs:
       - name: Handle failure
         if: failure()
         run: |
-         echo "${{ env.USER_EMAIL }} and ${{ env.MDADM }}"
+         echo "${{ env.USER_EMAIL }} and ${{ env.MDADM }} and  ${{ env.SUBJECT }}"
          if [[ -n "${{ env.MDADM }}" ]]; then
             echo "${{ env.MDADM }}" > out.txt
          else
