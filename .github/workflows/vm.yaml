@@ -19,7 +19,6 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
-          echo "ATTACHMENTS=$JOB_OUT" >> $GITHUB_ENV 
           echo "PULL REQUEST INFO:" > $JOB_OUT
           # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
@@ -51,7 +50,7 @@ jobs:
          fi
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@v1.2 # from dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v1.3 # from dawidd6/action-send-mail@v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -59,11 +58,10 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSKEY }}
           subject: ${{ env.SUBJECT }} 
-          to: paul.e.luse@intel.com
-          #${{ env.USER_EMAIL }}
+          to: ${{ env.USER_EMAIL }}
           from: md-raid-ci
           body: Build job of ${{ github.repository }} completed with failure! See attachments.
-          attachments: ${{ env.ATTACHMENTS }}
+          attachments: ${{ env.JOB_OUT }}
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
