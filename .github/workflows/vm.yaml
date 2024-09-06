@@ -21,11 +21,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
-          my_list=("apple" "banana" "cherry" "date")
-
-          # Print the list comma-separated
-          IFS=',' # Set the internal field separator to a comma
-          echo "${my_list[*]}"
+          mail_attach=()
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
         # TODO:  remove next line, here for testing only as push of yaml won't work without iy
@@ -47,20 +43,16 @@ jobs:
         run: |
          if [[ -n "${{ env.MDADM }}" ]]; then
             echo "${{ env.MDADM }}" > $WRONG_REPO
-            maiL_artifacts+=[$WRONG_REPO]
+            mail_attach+=($WRONG_REPO)
             cat $WRONG_REPO
          else
             echo "Build FAILURE"
-            maiL_artifacts+=[$BUILD_OUT]
+             mail_attach+=($BUILD_OUT)
             cat $BUILD_OUT
          fi
-         echo "matrix: ${{ matrix.maiL_artifacts }}"
-         att_string=$(echo "${{ matrix.maiL_artifacts }}" | paste -sd ",")
-         echo "ATTACHMENTS=$att_string" >> $GITHUB_ENV
-         echo "$WRONG_REPO : $BUILD_OUT"
-         echo "raw list: $maiL_artifacts"
-         echo "string: $att_string"
-         echo "expanded: $(echo '${{ matrix.maiL_artifacts }}' | paste -sd ',')"
+         IFS=','
+         echo "ATTACHMENTS=${my_list[*]}" >> $GITHUB_ENV
+         echo "exp: ${my_list[*]}"
          echo "the list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
