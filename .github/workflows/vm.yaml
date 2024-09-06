@@ -24,13 +24,13 @@ jobs:
           echo "add origin https://github.com/${{ github.repository }}"
           git remote add origin https://github.com/${{ github.repository }}
           echo "Fetching code..."
-          git fetch origin --depth=1 ${{ github.event.pull_request.head.sha }}
+          git fetch origin --depth=0 ${{ github.event.pull_request.head.sha }}
           echo "Resetting head..."
           git reset --hard ${{ github.event.pull_request.head.sha }}
           echo "Ready to configure..."
       - name: Get user's e-mail
         run: |
-          git checkout remotes/origin/${{ github.head_ref }}
+          #git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
         # TODO:  remove next line, here for testing only as push of yaml won't work without iy
