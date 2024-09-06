@@ -13,26 +13,30 @@ jobs:
       #- uses: actions/checkout@v4
       #  with:
       #    fetch-depth: 0 #needed for next step to work
-      - name: Checkout source
-        run: |
-          cd ..
-          rm -rf sandtmp
-          mkdir -p sandtmp
-          cd sandtmp
-          git init
-          git config --global --add safe.directory '*'
-          echo "add origin https://github.com/${{ github.repository }}"
-          git remote add origin https://github.com/${{ github.repository }}
-          echo "Fetching code..."
-          git fetch origin --depth=1 ${{ github.event.pull_request.head.sha }}
-          echo "Resetting head..."
-          git reset --hard ${{ github.event.pull_request.head.sha }}
-          echo "Ready to configure..."
-          git status
-          git branch
-          git checkout remotes/origin/${{ github.head_ref }}
+      #- name: Checkout source
+      #  run: |
+      #    cd ..
+      #    rm -rf sandtmp
+      #    mkdir -p sandtmp
+      #    cd sandtmp
+      #    git init
+      #    git config --global --add safe.directory '*'
+      #    echo "add origin https://github.com/${{ github.repository }}"
+      #    git remote add origin https://github.com/${{ github.repository }}
+      #    echo "Fetching code..."
+      #    git fetch origin --depth=1 ${{ github.event.pull_request.head.sha }}
+      #    echo "Resetting head..."
+      #    git reset --hard ${{ github.event.pull_request.head.sha }}
+      #    echo "Ready to configure..."
+      #    git status
+      #    git branch
+      #    git checkout remotes/origin/${{ github.head_ref }}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
+          git branch
           #git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
