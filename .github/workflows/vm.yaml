@@ -54,6 +54,8 @@ jobs:
             cat out.txt
          fi
          echo "Attach: ${{ env.MAIL_ATTACH }}"
+         ls -al
+         cat "${{ env.MAIL_ATTACH }}"
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.2 # from dawidd6/action-send-mail@v3.12.0
