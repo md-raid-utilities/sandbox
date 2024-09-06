@@ -33,6 +33,7 @@ jobs:
       #    git checkout remotes/origin/${{ github.head_ref }}
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
