@@ -19,6 +19,8 @@ jobs:
           git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
+        # TODO:  remove next line, here for testing only as push of yaml won't work without iy
+        continue-on-error: true 
       - name: Filter mis-routed mdadm patches
         run: |
           if [[ "${{ github.event.pull_request.title }}" == *"mdadm"* ]]; then
