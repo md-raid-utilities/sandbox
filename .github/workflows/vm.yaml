@@ -37,13 +37,13 @@ jobs:
           make > $BUILD_FAIL 2>&1
           echo "Build SUCCESS" 
           cat $BUILD_FAIL
-          maiL_artifacts = [$BUILD_FAIL]
+          maiL_artifacts=[$BUILD_FAIL]
       - name: Handle failure
         if: failure()
         run: |
          if [[ -n "${{ env.MDADM }}" ]]; then
             echo "${{ env.MDADM }}" > $WRONG_REPO
-            maiL_artifacts += [$WRONG_REPO]
+            maiL_artifacts+=[$WRONG_REPO]
             cat $WRONG_REPO
          else
             echo "Build FAILURE"
