@@ -51,8 +51,9 @@ jobs:
             cat $BUILD_OUT
          fi
          IFS=','
-         echo "ATTACHMENTS=${my_list[*]}" >> $GITHUB_ENV
-         echo "exp: ${my_list[*]}"
+         echo "${mail_attach[*]}"
+         echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
+         echo "exp: ${mail_attach[*]}"
          echo "the list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
