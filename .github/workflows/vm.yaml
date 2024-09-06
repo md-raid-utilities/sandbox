@@ -28,7 +28,7 @@ jobs:
           git reset --hard ${{ github.event.pull_request.head.sha }}
           echo "Ready to configure..."
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
       - name: Get user's e-mail
         run: |
           git checkout remotes/origin/${{ github.head_ref }}
