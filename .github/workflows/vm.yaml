@@ -30,6 +30,7 @@ jobs:
           echo "Pull request title: ${{ github.event.pull_request.title }}"
           echo "Pull request body: ${{ github.event.pull_request.body }}"
           mail_attach+=($PR_INFO)
+          cat $PR_INFO
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
@@ -59,6 +60,8 @@ jobs:
             mail_attach+=($BUILD_OUT)
             cat $BUILD_OUT
          fi
+         pwd
+         ls -al
          IFS=',' # make the list comma separated for the mailer
          echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
          echo "Raw list: ${mail_attach[*]}"
