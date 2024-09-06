@@ -47,10 +47,11 @@ jobs:
          if [[ -n "${{ env.MDADM }}" ]]; then
             echo "Job failures:" >> $JOB_OUT
             echo "${{ env.MDADM }}" >> $JOB_OUT
+            echo "${{ env.MDADM }}"
          else
             echo "Build FAILURE" >> $JOB_OUT
+            cat out.txt
          fi
-         cat $JOB_OUT
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.2 # from dawidd6/action-send-mail@v3.12.0
