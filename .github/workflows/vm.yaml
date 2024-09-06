@@ -13,7 +13,7 @@ jobs:
       #- uses: actions/checkout@v4
       #  with:
       #    fetch-depth: 0 #needed for next step to work
-      - nmae: Checkout source
+      - name: Checkout source
         run: |
           mkdir -p sandtmp
           cd sandtmp
