@@ -37,13 +37,8 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
-          git branch
-          #git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
-          echo "X"
-          echo "${{secrets.USER_EMAIL}} ${{secrets.SUBJECT}}"
-          echo "X"
         # TODO:  remove next line, here for testing only as push of yaml won't work without iy
         continue-on-error: true 
       - name: Filter mis-routed mdadm patches
@@ -61,6 +56,9 @@ jobs:
       - name: Handle failure
         if: failure()
         run: |
+         echo "X"
+         echo "${{env.USER_EMAIL}} ${{env.SUBJECT}} ${{env.MDADM}}"
+         echo "X"
          if [[ -n "${{ env.MDADM }}" ]]; then
             echo "${{ env.MDADM }}" > out.txt
          else
