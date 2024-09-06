@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
     
 env:
+    PR_INFO: "prinfo.txt"
     BUILD_OUT: "build.txt"
     WRONG_REPO: "mdadm.txt"
     TEST1_FAIL: "test1.txt"
@@ -21,8 +22,11 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
-          # in case we need to email mutiple attachments, create a list of them
           mail_attach=()
+          echo "Pull request author: ${{ github.event.pull_request.user.login }}" > $PR_INFO
+          echo "Pull request title: ${{ github.event.pull_request.title }}" >> $PR_INFO
+          echo "Pull request body: ${{ github.event.pull_request.body }}" >> $PR_INFO
+          mail_attach+=($PR_INFO)
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
@@ -54,6 +58,7 @@ jobs:
          fi
          IFS=',' # make the list comma separated for the mailer
          echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
+         echo "The list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.2 # from dawidd6/action-send-mail@v3.12.0
