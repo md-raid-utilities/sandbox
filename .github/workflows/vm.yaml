@@ -19,6 +19,9 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
+          # echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
+          # temp override this
+          echo "USER_EMAIL=paul.e.luse@intel.com" >> $GITHUB_ENV
           echo "PULL REQUEST INFO:" > $JOB_OUT
           # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
