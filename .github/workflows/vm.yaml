@@ -47,11 +47,11 @@ jobs:
         if: failure()
         run: |
          if [[ -n "${{ env.MDADM }}" ]]; then
-            echo "Job failures:" >> $JOB_OUT
+            echo "\r\nJOB FAILURE:" >> $JOB_OUT
             echo "${{ env.MDADM }}" >> $JOB_OUT
             echo "${{ env.MDADM }}"
          else
-            echo "BUILD FAILURE" >> $JOB_OUT
+            echo "\r\nBUILD FAILURE" >> $JOB_OUT
             cat out.txt >> $JOB_OUT
             cat out.txt
          fi
