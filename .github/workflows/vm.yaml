@@ -30,11 +30,15 @@ jobs:
           echo "Ready to configure..."
           git status
           git branch
+          git checkout remotes/origin/${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
           #git checkout remotes/origin/${{ github.head_ref }}
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
+          echo "X"
+          echo "${{secrets.USER_EMAIL}} ${{secrets.SUBJECT}}"
+          echo "X"
         # TODO:  remove next line, here for testing only as push of yaml won't work without iy
         continue-on-error: true 
       - name: Filter mis-routed mdadm patches
