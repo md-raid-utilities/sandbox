@@ -10,9 +10,21 @@ jobs:
   per-patch-testing:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 #needed for next step to work
+      #- uses: actions/checkout@v4
+      #  with:
+      #    fetch-depth: 0 #needed for next step to work
+      - nmae: Checkout source
+        run: |
+          mkdir -p sandtmp
+          cd sandtmp
+          git init
+          git config --global --add safe.directory '*'
+          git remote add origin https://github.com/${{ github.repository }}
+          echo "Fetching code..."
+          git fetch origin --depth=1 ${{ github.event.pull_request.head.sha }}
+          echo "Resetting head..."
+          git reset --hard ${{ github.event.pull_request.head.sha }}
+          echo "Ready to configure..."
       - name: Get user's e-mail
         id: user_email
         run: |
