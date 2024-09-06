@@ -24,10 +24,12 @@ jobs:
           echo "add origin https://github.com/${{ github.repository }}"
           git remote add origin https://github.com/${{ github.repository }}
           echo "Fetching code..."
-          git fetch origin --depth=0 ${{ github.event.pull_request.head.sha }}
+          git fetch origin --depth=1 ${{ github.event.pull_request.head.sha }}
           echo "Resetting head..."
           git reset --hard ${{ github.event.pull_request.head.sha }}
           echo "Ready to configure..."
+          git status
+          git branch
       - name: Get user's e-mail
         run: |
           #git checkout remotes/origin/${{ github.head_ref }}
