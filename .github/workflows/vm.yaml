@@ -24,8 +24,9 @@ jobs:
           # in case we need to email mutiple attachments, create a list of them
           mail_attach=()
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
+          # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
-        # TODO:  remove next line, here for testing only as push of yaml won't work without iy
+        # TODO:  remove next line, here for testing only as push of yaml won't work without it
         continue-on-error: true 
       - name: Filter mis-routed mdadm patches
         run: |
@@ -51,11 +52,11 @@ jobs:
             mail_attach+=($BUILD_OUT)
             cat $BUILD_OUT
          fi
-         IFS=',' # make the list comma separated
+         IFS=',' # make the list comma separated for the mailer
          echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@v1.2 # xx dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v1.2 # from dawidd6/action-send-mail@v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -63,11 +64,11 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSKEY }}
           subject: ${{ env.SUBJECT }} 
-          #Github Actions job FAILURE
           to: paul.e.luse@intel.com
           #${{ env.USER_EMAIL }}
           from: md-raid-ci
           body: Build job of ${{ github.repository }} completed with failure! See attachment.
+            Can this me multi line?
           attachments: ${{ env.ATTACHMENTS }} 
           reply_to: paul.e.luse@intel.com
       - name: final stuff
