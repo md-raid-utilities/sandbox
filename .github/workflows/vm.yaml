@@ -21,6 +21,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
+          # in case we need to email mutiple attachments, create a list of them
           mail_attach=()
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
@@ -47,14 +48,11 @@ jobs:
             cat $WRONG_REPO
          else
             echo "Build FAILURE"
-             mail_attach+=($BUILD_OUT)
+            mail_attach+=($BUILD_OUT)
             cat $BUILD_OUT
          fi
-         IFS=','
-         echo "${mail_attach[*]}"
+         IFS=',' # make the list comma separated
          echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
-         echo "exp: ${mail_attach[*]}"
-         echo "the list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.2 # xx dawidd6/action-send-mail@v3.12.0
