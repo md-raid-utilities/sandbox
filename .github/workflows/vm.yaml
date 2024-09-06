@@ -7,10 +7,7 @@ on:
     branches: [ "main" ]
     
 env:
-    PR_INFO: "prinfo.txt"
-    BUILD_OUT: "build.txt"
-    WRONG_REPO: "mdadm.txt"
-    TEST1_FAIL: "test1.txt"
+    JOB_OUT: "output.txt"
      
 jobs:
   per-patch-testing:
@@ -22,15 +19,11 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: Get user's e-mail
         run: |
-          mail_attach=()
-          echo "Pull request author: ${{ github.event.pull_request.user.login }}" > $PR_INFO
-          echo "Pull request title: ${{ github.event.pull_request.title }}" >> $PR_INFO
-          echo "Pull request body: ${{ github.event.pull_request.body }}" >> $PR_INFO
-          echo "Pull request author: ${{ github.event.pull_request.user.login }}"
-          echo "Pull request title: ${{ github.event.pull_request.title }}"
-          echo "Pull request body: ${{ github.event.pull_request.body }}"
-          mail_attach+=($PR_INFO)
-          cat $PR_INFO
+          echo "Pull Request Info:" > $JOB_OUT
+          echo "Pull request author: ${{ github.event.pull_request.user.login }}" >> $JOB_OUT
+          echo "Pull request title: ${{ github.event.pull_request.title }}" >> $JOB_OUT
+          echo "Pull request body: ${{ github.event.pull_request.body }}" >> $JOB_OUT
+          cat $JOB_OUT
           echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV 
           # for now add the sender email to the SUBJECT as I'm sending to myself while debugging
           echo "SUBJECT=Github Actions job FAILURE for $(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
@@ -45,27 +38,22 @@ jobs:
       - name: Build the project
         id: build
         run: |
-          make > $BUILD_OUT 2>&1
-          echo "Build SUCCESS" 
-          cat $BUILD_OUT
+          echo "Build Success:" >> $JOB_OUT
+          make >> $JOB_OUT 2>&1
+          echo "Build SUCCESS" :
+          cat $JOB_OUT
       - name: Failure information
         if: failure()
         run: |
          if [[ -n "${{ env.MDADM }}" ]]; then
-            echo "${{ env.MDADM }}" > $WRONG_REPO
-            mail_attach+=($WRONG_REPO)
-            cat $WRONG_REPO
+            echo "Job failures:" >> $JOB_OUT
+            echo "${{ env.MDADM }}" >> $JOB_OUT
          else
-            echo "Build FAILURE"
-            mail_attach+=($BUILD_OUT)
-            cat $BUILD_OUT
+            echo "Build FAILURE" >> $JOB_OUT
          fi
          pwd
          ls -al
-         IFS=',' # make the list comma separated for the mailer
-         echo "ATTACHMENTS=${mail_attach[*]}" >> $GITHUB_ENV
-         echo "Raw list: ${mail_attach[*]}"
-         echo "The list: ${{ env.ATTACHMENTS }}"
+         cat $JOB_OUT
       - name: Send build fail mail
         if: failure()
         uses: peluse/action-send-mail@v1.2 # from dawidd6/action-send-mail@v3.12.0
@@ -80,7 +68,7 @@ jobs:
           #${{ env.USER_EMAIL }}
           from: md-raid-ci
           body: Build job of ${{ github.repository }} completed with failure! See attachments.
-          attachments: ${{ env.ATTACHMENTS }} 
+          attachments: $JOB_OUT 
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
