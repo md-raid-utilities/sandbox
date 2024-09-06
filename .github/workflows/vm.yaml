@@ -20,7 +20,6 @@ jobs:
       - name: Get user's e-mail
         run: |
           # echo "USER_EMAIL=$(git log -n 1 --pretty=format:%ae)" >> $GITHUB_ENV
-          git log -n 1
           # temp override the aboe during testing
           echo "USER_EMAIL=paul.e.luse@intel.com" >> $GITHUB_ENV
           # start the output file
