@@ -49,9 +49,11 @@ jobs:
             echo "Build FAILURE"
             cat $BUILD_FAIL
          fi
+         echo "ATTACHMENTS=$(env_var=$(echo "$maiL_artifacts" | tr ',' ' '))" >> $GITHUB_ENV
+         echo "the list: ${{ env.ATTACHMENTS }}"
       - name: Send build fail mail
         if: failure()
-        uses: peluse/action-send-mail@v1.1 # xx dawidd6/action-send-mail@v3.12.0
+        uses: peluse/action-send-mail@v1.2 # xx dawidd6/action-send-mail@v3.12.0
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -64,7 +66,7 @@ jobs:
           #${{ env.USER_EMAIL }}
           from: md-raid-ci
           body: Build job of ${{ github.repository }} completed with failure! See attachment.
-          attachments: $maiL_artifacts
+          attachments: ${{ env.ATTACHMENTS }} 
           reply_to: paul.e.luse@intel.com
       - name: final stuff
         run: |
