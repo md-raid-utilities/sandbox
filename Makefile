@@ -1,4 +1,4 @@
-CC = gcc
+ffCC = gcc
 CFLAGS = -Wall -Wextra -pedantic -std=c99
 
 hello: hello.c
